@@ -27,6 +27,13 @@ dependencies:
   fancy_bottom_navigation: ^0.1.0
   pin_input_text_field: ^3.0.1
   toast: ^0.1.5
+  cloud_firestore: ^0.12.11
+  firebase_storage: ^3.0.8
+  firebase_crashlytics: ^0.1.2+2
+  firebase_messaging: ^6.0.2
+  firebase_core: ^0.4.2+1
+  firebase_auth: ^0.15.1
+  flutter_spinkit: "^4.1.1"
 
 dev_dependencies:
   flutter_test:
