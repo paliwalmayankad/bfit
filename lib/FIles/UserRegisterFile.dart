@@ -9,6 +9,7 @@ import 'package:bfit/Utils/UiViewsWidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
 class UserRegisterFile extends StatefulWidget{
   @override
@@ -17,7 +18,7 @@ class UserRegisterFile extends StatefulWidget{
     return _Userregisterfilestate();
   }
 }
-class _Userregisterfilestate extends State<UserRegisterFile>
+class _Userregisterfilestate extends State<UserRegisterFile>  with SingleTickerProviderStateMixin
 {
   bool namequestion=true,
       nameanswer=false,
@@ -34,19 +35,30 @@ class _Userregisterfilestate extends State<UserRegisterFile>
       emailquestion=false,
       emailanswer=false;
   TextEditingController messagecontroller;
+
+  TabController _tabController;
+
+  // Current Index of tab
+  int _currentIndex = 0;
   String nameanswerstring,addressanswerstring,ageanswerstring,heightanswerstring,weightanswerstring,
       genderanswerstring,emailanswerstring;
-
+final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle(color: Colors.white)),
+  1:Text("2",style: TextStyle(color: Colors.white),),
+  2:Text("3",style: TextStyle(color: Colors.white)),
+  3:Text("4",style: TextStyle(color: Colors.white))};
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     messagecontroller=new TextEditingController();
+    _tabController =
+    new TabController(vsync: this, length: 4, initialIndex: _currentIndex);
   }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(resizeToAvoidBottomPadding: true,
+    return  Scaffold(resizeToAvoidBottomPadding: true,
+
       body:SafeArea(child:
       Container(width: double.infinity,height: double.infinity,
           decoration:
@@ -55,6 +67,8 @@ class _Userregisterfilestate extends State<UserRegisterFile>
           Container(margin: const EdgeInsets.only(top: 40,left: 10,bottom: 10,right: 10),
 
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                //// SEGMENT BUTTON
+
                 //          //// CONTAINER FOR USER NAME ASK
                 new Align(
                     alignment: Alignment.centerLeft,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
@@ -227,7 +241,7 @@ class _Userregisterfilestate extends State<UserRegisterFile>
           nameanswerstring = message;
           nameanswer = true;
           addressquestion = true;
-          messagecontroller.text = null;
+          messagecontroller.text = "";
         });
       }
       else if (addressanswer == false) {
@@ -235,7 +249,7 @@ class _Userregisterfilestate extends State<UserRegisterFile>
           addressanswerstring = message;
           addressanswer = true;
           agequestion = true;
-          messagecontroller.text = null;
+          messagecontroller.text = "";
         });
       }
 
@@ -244,7 +258,7 @@ class _Userregisterfilestate extends State<UserRegisterFile>
           ageanswerstring = message;
           ageanswer = true;
           heightquestion = true;
-          messagecontroller.text = null;
+          messagecontroller.text = "";
         });
       }
 
@@ -253,7 +267,7 @@ class _Userregisterfilestate extends State<UserRegisterFile>
           heightanswerstring = message;
           heightanswer = true;
           weightquestion = true;
-          messagecontroller.text = null;
+          messagecontroller.text = "";
         });
       }
 
@@ -262,7 +276,7 @@ class _Userregisterfilestate extends State<UserRegisterFile>
           weightanswerstring = message;
           weightanswer = true;
           genderquestion = true;
-          messagecontroller.text = null;
+          messagecontroller.text = "";
         });
       }
 
@@ -271,7 +285,7 @@ class _Userregisterfilestate extends State<UserRegisterFile>
           genderanswerstring = message;
           genderanswer = true;
           emailquestion = true;
-          messagecontroller.text = null;
+          messagecontroller.text = "";
         });
       }
       else if (emailanswer == false) {
@@ -283,7 +297,8 @@ class _Userregisterfilestate extends State<UserRegisterFile>
         _registerusertodatabaseandredirecttohome();
 
       }
-      else {
+      else
+        {
         messagecontroller.text = null;
         // Toast.show("FORM SUBMITTED", context,duration: Toast.LENGTH_SHORT,gravity: Toast.BOTTOM);
 
@@ -295,17 +310,24 @@ class _Userregisterfilestate extends State<UserRegisterFile>
   void _registerusertodatabaseandredirecttohome()
   {
 
+    String formattedDate = UiViewsWidget.getcurrentdateasrequireformat(' dd/MMM/yyyy');
+
     Map<String,dynamic> map=
     {
       "address":addressanswerstring,
       "age":ageanswerstring,
       "email":emailanswerstring,
       "gender":genderanswerstring,
-      "height":heightanswerstring,
+      "height":FieldValue.arrayUnion([{"date":formattedDate,"value":heightanswerstring}]),
       "mobile":PrefrencesManager.getString(Stringconstants.MOBILE),
       "name":nameanswerstring,
       "role":"user",
-      "weight":weightanswerstring,
+      "weight":FieldValue.arrayUnion([{"date":formattedDate,"value":weightanswerstring}]),
+      "arms":FieldValue.arrayUnion([{"date":formattedDate,"value":"0"}]),
+      "bmi":FieldValue.arrayUnion([{"date":formattedDate,"value":"0"}]),
+      "chest":FieldValue.arrayUnion([{"date":formattedDate,"value":"0"}]),
+      "bodyfat":FieldValue.arrayUnion([{"date":formattedDate,"value":"0"}]),
+      "waist":FieldValue.arrayUnion([{"date":formattedDate,"value":"0"}]),
 
     };
     PrefrencesManager.setBool(Stringconstants.LOGIN, true);
@@ -332,6 +354,40 @@ PrefrencesManager.setString(Stringconstants.USERID, data.documentID.toString());
       }
     });*/
 
+
+
+  }
+
+  _segmentbuttoncontrol() {
+    double statusbarHeight = MediaQuery
+        .of(context)
+        .padding
+        .top;
+
+
+
+    return PreferredSize(
+        preferredSize: Size.fromHeight(40+statusbarHeight),
+
+        // here the desired height
+        child:
+            Container(color: Colors.transparent,  padding: new EdgeInsets.only(top: statusbarHeight),height: double.infinity,
+
+              child: CupertinoSegmentedControl<int>(
+                children: segmentvalue,
+                selectedColor: MyColors.basetextcolor,
+                borderColor: MyColors.basetextcolor,
+                unselectedColor: Colors.transparent,
+                onValueChanged: (int val){
+                  _currentIndex=val;
+                  setState(() {
+                    _currentIndex=val;
+                  });
+                },
+groupValue: _currentIndex,
+
+              ),
+            ));
 
 
   }

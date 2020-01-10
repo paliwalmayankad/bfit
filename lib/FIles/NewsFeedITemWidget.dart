@@ -1,8 +1,9 @@
+import 'package:bfit/Models/NewsModels.dart';
 import 'package:bfit/Utils/UiViewsWidget.dart';
 import 'package:flutter/material.dart';
 
 class NewsFeedITemWidget extends StatefulWidget{
-  final List<String> newsfeedlist;
+  final List<NewsModels> newsfeedlist;
   const NewsFeedITemWidget({Key key,this.newsfeedlist}):super(key:key);
   @override
   State<StatefulWidget> createState() {
@@ -16,11 +17,11 @@ class _NEwsFeedItemWidgetcreatestate extends State<NewsFeedITemWidget>{
     // TODO: implement build
     return ListView.builder(shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: 10 ,
+        itemCount: widget.newsfeedlist.length ,
         scrollDirection: Axis.vertical,
         itemBuilder: (context,index)
         {
-          return UiViewsWidget.NewsFeedHomeListITemView();
+          return UiViewsWidget.NewsFeedHomeListITemView(widget.newsfeedlist[index]);
         }) ;
   }
 }

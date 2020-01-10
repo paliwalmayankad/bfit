@@ -1,9 +1,9 @@
 class HomeGridItemModel{
   String img;
   String texttitle;
-  String id;
+  String documentid;
   String loadroute;
-  List<String> facilities;
+  List<dynamic> facilities;
   String priceforbuy;
-
+String timeduration;
 }

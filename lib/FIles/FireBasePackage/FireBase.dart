@@ -1,7 +1,11 @@
+import 'package:bfit/Models/HomeGridItemModel.dart';
+import 'package:bfit/Models/NewsModels.dart';
+import 'package:bfit/Utils/ConstantsForImages.dart';
 import 'package:bfit/Utils/PrefrencesManager.dart';
 import 'package:bfit/Utils/Stringconstants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FireBase {
@@ -53,4 +57,51 @@ class FireBase {
     });
 
   }
+
+  static Future<List<HomeGridItemModel>> getserviceslist() async{
+    List<HomeGridItemModel> gridmodel= List();
+  QuerySnapshot querySnapshot = await Firestore.instance.collection("services").getDocuments();
+  var list = querySnapshot.documents;
+for(int i=0;i<list.length;i++){
+  HomeGridItemModel hmodel =new HomeGridItemModel();
+  hmodel.documentid=list[i].documentID;
+  hmodel.texttitle=list[i].data["title"];
+  hmodel.img=list[i].data["img"];
+  hmodel.timeduration=list[i].data["validtimeforbuy"];
+  hmodel.priceforbuy=list[i].data["price"];
+  hmodel.facilities=list[i].data["facilities"];
+  gridmodel.add(hmodel);
+
+}
+return gridmodel;
+
+  }
+  static Future<List<NewsModels>> getnewslist() async{
+    List<NewsModels> newslsit= List();
+  QuerySnapshot querySnapshot = await Firestore.instance.collection("news").getDocuments();
+  var list = querySnapshot.documents;
+    for(int i=0;i<list.length;i++){
+      NewsModels newsmodels =new NewsModels();
+      newsmodels.newsid=list[i].documentID;
+      newsmodels.newslikers=list[i].data["likes"];
+      newsmodels.newsdislikers=list[i].data["dislikes"];
+      newsmodels.newsimage=list[i].data["image"];
+      newsmodels.newstitle=list[i].data["title"];
+      newsmodels.newssubtitle=list[i].data["subtitle"];
+      newsmodels.newsposttime=list[i].data["time"];
+      newsmodels.uploaderimage=list[i].data["uploaderimage"];
+      newsmodels.uploadername=list[i].data["uploadername"];
+
+
+      newslsit.add(newsmodels);
+
+    }
+
+
+return newslsit;
+
+  }
+
+
+
 }
