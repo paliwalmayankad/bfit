@@ -1,4 +1,4 @@
-import 'package:bfit/FIles/FireBasePackage/FireBase.dart';
+import 'package:bfit/FireBasePackage/FireBase.dart';
 import 'package:bfit/Models/NewsModels.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
 import 'package:bfit/Utils/MyColors.dart';
@@ -58,7 +58,10 @@ class _NewsFileState extends State<NewsFile>{
 
   _newslist() {
 
-   return
+   return SingleChildScrollView(scrollDirection:Axis.vertical
+       ,
+controller: _hideButtonController,
+    child:
      Column(children: <Widget>[
       InkWell(
           onTap: (){
@@ -73,7 +76,7 @@ Navigator.pushNamed(context, '/createnewsfile');
        Text("Post News",
          style: TextStyle(color: Colors.white),),)),
 
-     NewsFeedITemWidget(newsfeedlist: newsfeedlist,)],) ;
+     NewsFeedITemWidget(newsfeedlist: newsfeedlist,)],)) ;
 
   }
 

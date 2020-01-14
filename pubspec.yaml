@@ -42,6 +42,8 @@ dependencies:
   popup_menu: ^1.0.5
   intl: ^0.16.0
   timeago: ^2.0.24
+  flutter_rating_bar: ^3.0.0
+  flutter_swiper: ^1.1.6
 
 dev_dependencies:
   flutter_test:

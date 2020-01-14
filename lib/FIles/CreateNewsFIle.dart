@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:bfit/ImageHandler/ImagePickerHandler.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
 import 'package:bfit/Utils/MyColors.dart';
+import 'package:bfit/Utils/PrefrencesManager.dart';
+import 'package:bfit/Utils/Stringconstants.dart';
 import 'package:bfit/Utils/UiViewsWidget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -79,7 +83,10 @@ class _CreateNEwsFileState extends State<CreateNewsFile> with TickerProviderStat
   }
 
   Widget _createabodyfornews() {
-    return Container(
+    return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        physics: NeverScrollableScrollPhysics(),
+        child: Container(
       padding: EdgeInsets.only(left: 15,top: 20,right: 20,bottom: 15),
       decoration: UiViewsWidget.whiteboxroundeddecoration(),
 
@@ -137,7 +144,7 @@ class _CreateNEwsFileState extends State<CreateNewsFile> with TickerProviderStat
 
             decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: "Subtitle",
+              hintText: "Short news",
               hintStyle: TextStyle(color: Colors.white),
             ),),
 
@@ -171,7 +178,7 @@ class _CreateNEwsFileState extends State<CreateNewsFile> with TickerProviderStat
 
             decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: "Description",
+              hintText: "Full news",
               hintStyle: TextStyle(color: Colors.white),
             ),),
 
@@ -207,7 +214,7 @@ class _CreateNEwsFileState extends State<CreateNewsFile> with TickerProviderStat
       ],),
 
 
-    );
+    ));
 
   }
 
@@ -242,7 +249,7 @@ class _CreateNEwsFileState extends State<CreateNewsFile> with TickerProviderStat
   userImage(File _image) {
     // TODO: implement userImage
     setState(() {
-      photoselect="Photo addedd";
+      photoselect="Photo added";
       if(_image!=null) {
         this._image = _image;
         UiViewsWidget.bottomsnackbar(
@@ -251,13 +258,71 @@ class _CreateNEwsFileState extends State<CreateNewsFile> with TickerProviderStat
     });
   }
 
-  void _uploaddatafirestore() {
+  void _uploaddatafirestore() async {
     try{
+
+     UiViewsWidget.showprogressdialogcomplete(context, true);
+
+        StorageReference ref =
+        FirebaseStorage.instance.ref().child(PrefrencesManager.getString(Stringconstants.MOBILE)).child(titlecontroller.text.toString()+"bannerimage.jpg");
+        StorageUploadTask uploadTask = ref.putFile(_image);
+        final StorageTaskSnapshot downloadUrl =
+        (await uploadTask.onComplete);
+        final String url = (await downloadUrl.ref.getDownloadURL());
+
+    /* final String url = (await uploadTask.ref.getDownloadURL());
+      return await (await uploadTask.onComplete).ref.getDownloadURL();*/
+
+    /// NOW HERE WE REGISTER USER AND HIS COMPLETE DATA
+    await Firestore.instance.collection("news").add({
+    'title': titlecontroller.text.toString(),
+    'subtitle': subtitlecontroller.text.toString(),
+    'description': descriptioncontroller.text.toString(),
+
+      'bookmarks':[],
+      'likes':[],
+      'dislikes':[],
+    'uploaderid': PrefrencesManager.getString(Stringconstants.USERID),
+      'image': url,
+      "time":UiViewsWidget.getcurrentdateasrequireformat("EEE, dd/MMM/yyyy hh:mm a"),
+      "uploaderimage":PrefrencesManager.getString(Stringconstants.USERPHOTO),
+      "uploadername":PrefrencesManager.getString(Stringconstants.NAME),
+
+
+
+
+    }).then((documentReference) {
+
+    /// SAVE VALUES TO SHAREDPREFRENCES
+    UiViewsWidget.showprogressdialogcomplete(context, false);
+Navigator.of(context).pop();
+
+
+    }).catchError((e) {
+
+    UiViewsWidget.showprogressdialogcomplete(context, false);
+
+print(e);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }
     catch(e){
-
+      print(e);
+      UiViewsWidget.showprogressdialogcomplete(context, false);
     }
 
 

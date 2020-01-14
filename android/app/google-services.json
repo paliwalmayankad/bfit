@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "985666445535",
+    "firebase_url": "https://bfit-2a7c4.firebaseio.com",
+    "project_id": "bfit-2a7c4",
+    "storage_bucket": "bfit-2a7c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985666445535:android:e3eec02dd38353ff07096a",
+        "android_client_info": {
+          "package_name": "com.aaron.bfit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985666445535-0scp36cg92m726ufatu6938qk7abnpll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aaron.bfit",
+            "certificate_hash": "a1a6caaaaeff9d0cde881c928a831958b728b980"
+          }
+        },
+        {
+          "client_id": "985666445535-1qt0tivmb3veandigtr77opmo0endv44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA85PssMpAwexn22Q4s5XMM7jjcPulniDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985666445535-1qt0tivmb3veandigtr77opmo0endv44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

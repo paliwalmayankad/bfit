@@ -1,4 +1,5 @@
 import 'package:bfit/Models/Bookmarkmodels.dart';
+import 'package:bfit/Models/GymListModels.dart';
 import 'package:bfit/Models/HomeGridItemModel.dart';
 import 'package:bfit/Models/NewsModels.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
@@ -181,6 +182,55 @@ return bookmarklist;
 
   }
 
+//// GET GYM LIST AND DETAIL
+  static Future<List<GymListModels>> getGymListandDEtail() async{
+    List<GymListModels> gymlist= List();
+    QuerySnapshot querySnapshot = await Firestore.instance.collection("Gyms").getDocuments();
+    var list = querySnapshot.documents;
+    for(int i=0;i<list.length;i++){
+      GymListModels gymmodels =new GymListModels();
+      gymmodels.gymid=list[i].documentID;
+      gymmodels.aboutgym=list[i].data["aboutgym"];
+      gymmodels.closetimeevening=list[i].data["closetimeevening"];
+      gymmodels.closetimemorning=list[i].data["closetimemorning"];
+      gymmodels.gymachivementpictures=list[i].data["gymachivementspictures"];
+      gymmodels.gympictures=list[i].data["gympictures"];
+      gymmodels.gymicon=list[i].data["gymicon"];
+      gymmodels.location=list[i].data["location"];
+      gymmodels.gymname=list[i].data["name"];
+      gymmodels.openingtimeevening=list[i].data["opentimeevening"];
+      gymmodels.openingtimemorning=list[i].data["opentimemorning"];
 
+      gymmodels.gymplans=list[i].data["gymplans"];
+      gymmodels.rating=double.parse(list[i].data["rating"]);
+      gymmodels.userspaidlsit=list[i].data["userreservationlistforpay"];
+      gymmodels.uservisited=list[i].data["description"];
+
+
+
+      String userid=PrefrencesManager.getString(Stringconstants.USERID);
+      //// CHECK user visited  OR NOT
+      try {
+        for (int i = 0; i < gymmodels.userspaidlsit.length; i++) {
+          if (userid == gymmodels.userspaidlsit[i]) {
+            gymmodels.uservisited = true;
+            break;
+          }
+        }
+
+      }
+      catch(e)
+      {
+        print(e);
+      }
+
+      gymlist.add(gymmodels);
+
+    }
+
+
+    return gymlist;
+
+  }
 
 }

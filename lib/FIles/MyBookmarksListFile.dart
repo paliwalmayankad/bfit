@@ -1,4 +1,4 @@
-import 'package:bfit/FIles/FireBasePackage/FireBase.dart';
+import 'package:bfit/FireBasePackage/FireBase.dart';
 import 'package:bfit/Models/Bookmarkmodels.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
 import 'package:bfit/Utils/MyColors.dart';
