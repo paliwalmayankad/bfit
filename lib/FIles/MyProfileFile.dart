@@ -38,7 +38,8 @@ class _MyPRofileCreateState extends State<MyProfileFile> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold( body:
+    return Scaffold(
+        body:
     Container(decoration: UiViewsWidget.BackgroundImage(),child:
     SingleChildScrollView(scrollDirection: Axis.vertical,
 
@@ -133,7 +134,11 @@ class _MyPRofileCreateState extends State<MyProfileFile> with TickerProviderStat
          SizedBox(height: 15,),
          Container(height: 60, child:UiViewsWidget.greenbuttonwithtext("Medical history") ,),
          SizedBox(height: 15,),
-         Container(height: 60, child:UiViewsWidget.greenbuttonwithtext("view your profile") ,),
+         Container(height: 60,
+           child:InkWell(onTap:(){
+             Navigator.pushNamed(context, "/viewmyprofile");
+           },child:
+           UiViewsWidget.greenbuttonwithtext("view your profile") ,),),
          SizedBox(height: 15,),
          Container(height: 60, child:UiViewsWidget.greenbuttonwithtext("My payments") ,),
          SizedBox(height: 15,),

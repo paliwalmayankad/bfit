@@ -1,3 +1,4 @@
+import 'package:bfit/Models/Bookmarkmodels.dart';
 import 'package:bfit/Models/HomeGridItemModel.dart';
 import 'package:bfit/Models/NewsModels.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
@@ -26,20 +27,27 @@ class FireBase {
           'mobile', isEqualTo: countrycode + mobileno).getDocuments();
       if (querySnapshot.documents.length > 0) {
         PrefrencesManager.setBool(Stringconstants.LOGIN, true);
+
         PrefrencesManager.setString(Stringconstants.ADDRESS, querySnapshot.documents[0].data['address']);
         PrefrencesManager.setString(Stringconstants.AGE, querySnapshot.documents[0].data['age']);
         PrefrencesManager.setString(Stringconstants.EMAIL, querySnapshot.documents[0].data['email']);
         PrefrencesManager.setString(Stringconstants.GENDER, querySnapshot.documents[0].data['gender']);
-        PrefrencesManager.setString(Stringconstants.HEIGHT, querySnapshot.documents[0].data['height']);
-        PrefrencesManager.setString(Stringconstants.WEIGHT, querySnapshot.documents[0].data['weight']);
+        PrefrencesManager.setString(Stringconstants.USERID, querySnapshot.documents[0].documentID);
+        //PrefrencesManager.setString(Stringconstants.HEIGHT, querySnapshot.documents[0].data['height']);
+        //PrefrencesManager.setString(Stringconstants.WEIGHT, querySnapshot.documents[0].data['weight']);
         PrefrencesManager.setString(Stringconstants.NAME, querySnapshot.documents[0].data['name']);
         PrefrencesManager.setString(Stringconstants.ROLE, querySnapshot.documents[0].data['role']);
+        PrefrencesManager.setString(Stringconstants.USERPHOTO, querySnapshot.documents[0].data['img']);
 
 
         return true;
+
       }
-      else {
+      else
+        {
+
         return false;
+
       }
     }
     catch (e) {
@@ -91,7 +99,47 @@ return gridmodel;
       newsmodels.newsposttime=list[i].data["time"];
       newsmodels.uploaderimage=list[i].data["uploaderimage"];
       newsmodels.uploadername=list[i].data["uploadername"];
+      newsmodels.bookmarkuserlist=list[i].data["bookmarks"];
+      newsmodels.description=list[i].data["description"];
 
+     /* List<dynamic> bookmarklist=new List();
+      bookmarklist=list[i].data["bookmarks"];
+
+      List<dynamic> likeslist=new List();
+      likeslist=list[i].data["likes"];
+
+      List<dynamic> dislikelist=new List();
+      dislikelist=list[i].data["dislikes"];*/
+
+      String userid=PrefrencesManager.getString(Stringconstants.USERID);
+      //// CHECK BOOKMARK OR NOT
+      try {
+        for (int i = 0; i < newsmodels.bookmarkuserlist.length; i++) {
+          if (userid == newsmodels.bookmarkuserlist[i]) {
+            newsmodels.bookmark = true;
+            break;
+          }
+        }
+        //// CHECK FOR PAGE LIKE
+        for (int i = 0; i < newsmodels.newslikers.length; i++) {
+          if (userid == newsmodels.newslikers[i]) {
+            newsmodels.like = true;
+            break;
+          }
+        }
+        //// CHECK FOR PAGE DISLIKE
+
+        for (int i = 0; i < newsmodels.newsdislikers.length; i++) {
+          if (userid == newsmodels.newsdislikers[i]) {
+            newsmodels.dislike = true;
+            break;
+          }
+        }
+      }
+      catch(e)
+    {
+      print(e);
+    }
 
       newslsit.add(newsmodels);
 
@@ -99,6 +147,37 @@ return gridmodel;
 
 
 return newslsit;
+
+  }
+
+
+  static Future<List<Bookmarkmodels>> getbookmarklist() async{
+    List<Bookmarkmodels> bookmarklist= List();
+  var querySnapshot = await Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID)).get();
+  var list = querySnapshot.data['bookmarkslist'];
+    for(int i=0;i<list.length;i++){
+      try {
+        Bookmarkmodels bookmarkmo = new Bookmarkmodels();
+        Map<dynamic,dynamic> map=list[i];
+        bookmarkmo.id = map["id"];
+
+        bookmarkmo.title = map["title"];
+        bookmarkmo.date = map["date"];
+        bookmarkmo.img = map["img"];
+        bookmarkmo.category = map["cat"];
+
+
+        bookmarklist.add(bookmarkmo);
+      }
+      catch(e)
+    {
+      print(e);
+    }
+
+    }
+
+
+return bookmarklist;
 
   }
 

@@ -10,5 +10,6 @@ class Stringconstants{
   static String WEIGHT="WEIGHT";
   static String ROLE="ROLE";
   static String USERID="USERID";
+  static String USERPHOTO="USERPHOTO";
 
 }

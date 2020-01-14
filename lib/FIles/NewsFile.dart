@@ -1,8 +1,12 @@
 import 'package:bfit/FIles/FireBasePackage/FireBase.dart';
 import 'package:bfit/Models/NewsModels.dart';
+import 'package:bfit/Utils/ConstantsForImages.dart';
+import 'package:bfit/Utils/MyColors.dart';
 import 'package:bfit/Utils/UiViewsWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+import 'NewsFeedITemWidget.dart';
 
 class NewsFile extends StatefulWidget{
  final Function callback;
@@ -54,17 +58,22 @@ class _NewsFileState extends State<NewsFile>{
 
   _newslist() {
 
-   return ListView.builder(
-    shrinkWrap: true,
-    controller: _hideButtonController,
+   return
+     Column(children: <Widget>[
+      InkWell(
+          onTap: (){
+            ///// NAVIGATE SCREEN TO CREATE POST
+Navigator.pushNamed(context, '/createnewsfile');
+          },
 
-    physics: NeverScrollableScrollPhysics(),
-    itemCount: newsfeedlist.length ,
-    scrollDirection: Axis.vertical,
-    itemBuilder: (context,index)
-    {
-      return UiViewsWidget.NewsFeedHomeListITemView(newsfeedlist[index]);
-    }) ;
+          child: Container(
+         margin: EdgeInsets.only(top: 10,bottom: 10),
+         padding: EdgeInsets.only(left: 30,right: 30,top: 12,bottom: 12),
+         decoration:UiViewsWidget.greenboxbutton(),child:
+       Text("Post News",
+         style: TextStyle(color: Colors.white),),)),
+
+     NewsFeedITemWidget(newsfeedlist: newsfeedlist,)],) ;
 
   }
 
@@ -81,4 +90,6 @@ class _NewsFileState extends State<NewsFile>{
     //UiViewsWidget.showprogressdialogcomplete(context, false);
 
   }
+
+
 }
