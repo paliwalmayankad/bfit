@@ -14,5 +14,6 @@ bool like=false;
 bool dislike=false;
 String uploadername;
 String description;
+String uploaderid;
 
 }

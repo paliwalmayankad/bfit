@@ -1,3 +1,4 @@
+import 'package:bfit/FIles/UserShowProfile.dart';
 import 'package:bfit/Models/NewsModels.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
 import 'package:bfit/Utils/MyColors.dart';
@@ -27,136 +28,168 @@ class _NEwsFeedItemWidgetcreatestate extends State<NewsFeedITemWidget>{
         scrollDirection: Axis.vertical,
         itemBuilder: (context,index)
         {
-          return  Card(
-              elevation:1,
-              margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-              borderOnForeground: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0.0),
-              ),
-              child:Container(
-                margin: EdgeInsets.only(top: 10),
-                height: 300,
-                color: Colors.white,
-                //// CREATE COLUMN
-                child: Column(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>
-                [
-                  //// TITLE NAME
-                  InkWell(onTap: (){
-                    _returnwithdetaildialogbox(widget.newsfeedlist[index]);
-
-                  }, child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-                  Padding(padding: EdgeInsets.only(left: 20),
-                    child:
-                    Text(widget.newsfeedlist[index].newstitle,
-                      style:TextStyle(
-                          color: Colors.black,fontWeight:FontWeight.bold,fontSize: 18
-                      ),
-                      textAlign: TextAlign.left ,),
-                  ),
-                  SizedBox(height: 5,),
-                  /// SUBTITLE AND TIME
-                  Padding(padding: EdgeInsets.only(left: 20,right: 5),
-                      child:Row(children: <Widget>[
-                        Expanded(child:Text(widget.newsfeedlist[index].newssubtitle,
-                          style:TextStyle(
-                              color: MyColors.lightgrey,fontSize: 14
-                          ),
-                          textAlign: TextAlign.left ,)),
-                        Text(UiViewsWidget.timesagofeacture(widget.newsfeedlist[index].newsposttime),
-                          style:TextStyle(
-                              color: MyColors.lightgrey,fontSize: 14
-                          ),
-                          textAlign: TextAlign.left ,),
-                      ],)
-                  ),
-                  SizedBox(height: 5,),],),),
-                  //// BANNER IAMGE
-                  FadeInImage(
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.fill,
-                    image: NetworkImage(widget.newsfeedlist[index].newsimage), placeholder: AssetImage(ConstantsForImages.imgplaceholder),),
-
-                  SizedBox(height: 5,),
-                  Padding(padding: EdgeInsets.only(left: 20,right: 5),
-                      child:Row(children: <Widget>[
-                        Expanded(child:
-                        Row(children: <Widget>[
-                          ClipRRect(
-
-                            borderRadius: BorderRadius.circular(25.0),
+          try {
+            return Card(
+                elevation: 1,
+                margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                borderOnForeground: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0.0),
+                ),
+                child: Container(
+                  margin: EdgeInsets.only(top: 10),
+                  height: 300,
+                  color: Colors.white,
+                  //// CREATE COLUMN
+                  child: Column(mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>
+                    [
+                      //// TITLE NAME
+                      InkWell(onTap: () {
+                        _returnwithdetaildialogbox(widget.newsfeedlist[index]);
+                      }, child:
+                      Column(mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(padding: EdgeInsets.only(left: 20),
                             child:
-                            Container( child: FadeInImage(
-                              height: 40,
-                              width: 40,
-
-                              fit: BoxFit.fill,
-                              image: NetworkImage(widget.newsfeedlist[index].uploaderimage), placeholder: AssetImage(ConstantsForImages.imgplaceholder),),),
+                            Text(widget.newsfeedlist[index].newstitle,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18
+                              ),
+                              textAlign: TextAlign.left,),
                           ),
-                          SizedBox(width: 3,),
-                          Text(widget.newsfeedlist[index].uploadername,
-                            style:TextStyle(
-                                color: MyColors.lightgrey,fontSize: 14
+                          SizedBox(height: 5,),
+
+                          /// SUBTITLE AND TIME
+                          Padding(padding: EdgeInsets.only(left: 20, right: 5),
+                              child: Row(children: <Widget>[
+                                Expanded(child: Text(
+                                  widget.newsfeedlist[index].newssubtitle,
+                                  style: TextStyle(
+                                      color: MyColors.lightgrey, fontSize: 14
+                                  ),
+                                  textAlign: TextAlign.left,)),
+                                Text(UiViewsWidget.timesagofeacture(
+                                    widget.newsfeedlist[index].newsposttime),
+                                  style: TextStyle(
+                                      color: MyColors.lightgrey, fontSize: 14
+                                  ),
+                                  textAlign: TextAlign.left,),
+                              ],)
+                          ),
+                          SizedBox(height: 5,),
+                        ],),),
+                      //// BANNER IAMGE
+                      FadeInImage(
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.fill,
+                        image: NetworkImage(
+                            widget.newsfeedlist[index].newsimage),
+                        placeholder: AssetImage(
+                            ConstantsForImages.imgplaceholder),),
+
+                      SizedBox(height: 5,),
+                      Padding(padding: EdgeInsets.only(left: 20, right: 5),
+                          child: Row(children: <Widget>[
+                            Expanded(child:
+                           InkWell(
+                               /// ONTAP OPEN USER DETAIL
+                             onTap: (){
+                               
+                               Navigator.push(context,MaterialPageRoute(builder: (context)=>UserShowProfile(userid:  widget.newsfeedlist[index].uploaderid,)));
+                               
+                             },
+                               
+                               
+                               child: Row(children: <Widget>[
+                              ClipRRect(
+
+                                borderRadius: BorderRadius.circular(25.0),
+                                child:
+                                Container(child: FadeInImage(
+                                  height: 40,
+                                  width: 40,
+
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(
+                                      widget.newsfeedlist[index].uploaderimage),
+                                  placeholder: AssetImage(
+                                      ConstantsForImages.imgplaceholder),),),
+                              ),
+                              SizedBox(width: 3,),
+                              Text(widget.newsfeedlist[index].uploadername,
+                                style: TextStyle(
+                                    color: MyColors.lightgrey, fontSize: 14
+                                ),
+                                textAlign: TextAlign.left,)
+                            ],)),
                             ),
-                            textAlign: TextAlign.left ,)],)
-                        ),
-                        Row(children: <Widget>[
+                            Row(children: <Widget>[
 
-                          InkWell(onTap: (){
-                            _likesstatechange(widget.newsfeedlist[index]);
+                              InkWell(onTap: () {
+                                _likesstatechange(widget.newsfeedlist[index]);
+                              },
+                                  child: widget.newsfeedlist[index].like ==
+                                      false ?
+                                  Image.asset(
+                                    ConstantsForImages.unlikepage,
+                                    height: 30,
+                                    width: 30,) :
+                                  Image.asset(
+                                    ConstantsForImages.likedpage,
+                                    height: 30,
+                                    width: 30,)),
 
-                          },child:widget.newsfeedlist[index].like==false?
-                          Image.asset(
-                            ConstantsForImages.unlikepage,
-                            height:30,
-                            width: 30,):
-                          Image.asset(
-                            ConstantsForImages.likedpage,
-                            height:30,
-                            width: 30,)),
+                              SizedBox(width: 5,),
+                              InkWell(onTap: () {
+                                _dislikesstatechange(
+                                    widget.newsfeedlist[index]);
+                              },
+                                  child: widget.newsfeedlist[index].dislike ==
+                                      false ?
+                                  Image.asset(
+                                    ConstantsForImages.undislikepage,
+                                    height: 30,
+                                    width: 30,) :
+                                  Image.asset(
+                                    ConstantsForImages.dislikepage,
+                                    height: 30,
+                                    width: 30,)),
 
-                          SizedBox(width: 5,),
-                          InkWell(onTap: (){
-                            _dislikesstatechange(widget.newsfeedlist[index]);
+                              SizedBox(width: 5,),
+                              InkWell(onTap: () {
+                                _bookmarkstatechange(
+                                    widget.newsfeedlist[index]);
+                              },
+                                  child: widget.newsfeedlist[index].bookmark ==
+                                      false ?
+                                  Image.asset(
+                                    ConstantsForImages.bookmark,
+                                    height: 30,
+                                    width: 30,) :
+                                  Image.asset(
+                                    ConstantsForImages.bookmarked,
+                                    height: 30,
+                                    width: 30,)),
 
-                          },child:widget.newsfeedlist[index].dislike==false?
-                          Image.asset(
-                            ConstantsForImages.undislikepage,
-                            height: 30,
-                            width: 30,):
-                          Image.asset(
-                            ConstantsForImages.dislikepage,
-                            height: 30,
-                            width: 30,)),
-
-                          SizedBox(width: 5,),
-                          InkWell(onTap: (){
-                            _bookmarkstatechange(widget.newsfeedlist[index]);
-
-                          },
-                              child:widget.newsfeedlist[index].bookmark==false?
-                              Image.asset(
-                                ConstantsForImages.bookmark,
-                                height: 30,
-                                width: 30,):
-                              Image.asset(
-                                ConstantsForImages.bookmarked,
-                                height: 30,
-                                width: 30,)),
-
-                        ],),
-                      ],)
-                  ),
-
-
-
-
-                ],),
+                            ],),
+                          ],)
+                      ),
 
 
-              ));
+                    ],),
+
+
+                ));
+          }catch(e)
+          {
+            print(e);
+          }
         }) ;
   }
 

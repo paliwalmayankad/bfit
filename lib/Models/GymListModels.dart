@@ -11,10 +11,20 @@ class GymListModels
   String gymname;
   String openingtimeevening;
   String openingtimemorning;
-  List<dynamic> gymplans;
+  List<GymPlans> gymplans;
   double rating;
-  List<dynamic> userspaidlsit;
+  List<GymPlans> userspaidlsit;
   bool uservisited=false;
 
+
+}
+class GymPlans{
+  String price;
+  String duration;
+
+  String userid;
+  String purchaseplan;
+  String subscriptionid;
+  String timeslot;
 
 }

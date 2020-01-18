@@ -78,7 +78,8 @@ bool loadingbox=false;
                   children: <Widget>[
                     SizedBox(height: 200, child:
                     Image.asset(
-                      ConstantsForImages.bfitsplashlogo, fit: BoxFit.cover,)),
+                      ConstantsForImages.bfitsplashlogo, fit: BoxFit.cover,)
+                    ),
 
 
                   ],

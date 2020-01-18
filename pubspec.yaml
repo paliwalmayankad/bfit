@@ -44,6 +44,11 @@ dependencies:
   timeago: ^2.0.24
   flutter_rating_bar: ^3.0.0
   flutter_swiper: ^1.1.6
+  razorpay_flutter: 1.1.2
+  flutube: ^0.8.3
+  flutter_youtube: "^2.0.0"
+  youtube_player: ^0.6.0
+  expandable: ^4.0.2
 
 dev_dependencies:
   flutter_test:

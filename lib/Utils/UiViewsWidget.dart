@@ -36,7 +36,7 @@ class UiViewsWidget extends BloCSetting {
     return BoxDecoration(
 
         image: DecorationImage(
-            image: AssetImage(ConstantsForImages.bfitbackground),
+            image: AssetImage(ConstantsForImages.doodlemaximage),
             fit: BoxFit.cover
         )
     );
@@ -319,14 +319,18 @@ class UiViewsWidget extends BloCSetting {
 
                 ],)),),
                 SizedBox(height: 13,),
-                InkWell(onTap: (){Navigator.of(context).pop();},child: Container(child:Row(  children: <Widget>[
+                InkWell(onTap: (){Navigator.of(context).pop();
+                addState(phoneass.exercise);
+                },child: Container(child:Row(  children: <Widget>[
                   Image.asset(ConstantsForImages.drawericonexercise,height: 30,width: 30,),
                   SizedBox(width: 10,),
                   Text('Exercises',style: TextStyle(color: Colors.white,fontSize: 14),)
 
                 ],)),),
                 SizedBox(height: 13,),
-                InkWell(onTap: (){Navigator.of(context).pop();},child: Container(child:Row(  children: <Widget>[
+                InkWell(onTap: (){Navigator.of(context).pop();
+                addState(phoneass.workout);
+                },child: Container(child:Row(  children: <Widget>[
                   Image.asset(ConstantsForImages.drawericonworkout,height: 30,width: 30,),
                   SizedBox(width: 10,),
                   Text('Workouts',style: TextStyle(color: Colors.white,fontSize: 14),)
@@ -784,7 +788,7 @@ class UiViewsWidget extends BloCSetting {
   static String timesagofeacture(String fromdate){
     try {
 
-      var updatedatefrom = new DateFormat('EEE, dd/MMM/yyyy, hh:mm a').parse(fromdate);
+      var updatedatefrom = new DateFormat('EEE, dd/MMM/yyyy HH:mm:ss').parse(fromdate);
 // with a defined format
       // var newDateTimeObj2 = new DateFormat("dd/MM/yyyy HH:mm:ss").parse("10/02/2000 15:13:09");
       final now = new DateTime.now();
@@ -794,7 +798,8 @@ class UiViewsWidget extends BloCSetting {
       final difference = now.difference(updatedatefrom);
       timemsg = timeago.format(now.subtract(difference), locale: locale);
       return timemsg;
-    }catch(e)
+    }
+    catch(e)
     {
       print(e);
     }

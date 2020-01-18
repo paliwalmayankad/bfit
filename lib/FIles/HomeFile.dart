@@ -96,7 +96,7 @@ controller: _hideButtonController,
   {
     FireBase.getserviceslist().then((data){
 
-      _listforwidgets.add( GridItemWidgetView(datalist: data,context: context,));
+      _listforwidgets.add(GridItemWidgetView(datalist: data,context: context,));
       _listforwidgets.add(UiViewsWidget.homediscovertag());
       _getnewsdetailfeed();
 

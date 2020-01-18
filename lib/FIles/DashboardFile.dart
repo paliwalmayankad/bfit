@@ -2,6 +2,7 @@ import 'package:bfit/FIles/MyBookmarksListFile.dart';
 import 'package:bfit/FIles/MyProfileFile.dart';
 import 'package:bfit/FIles/NewsFile.dart';
 import 'package:bfit/FIles/UserMessageFile.dart';
+import 'package:bfit/FIles/WorkoutsFile.dart';
 import 'package:bfit/Utils/MyColors.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:bfit/FIles/BusinessFile.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'ArtistFile.dart';
+import 'ExerciseHeaderFile.dart';
 import 'GymListFile.dart';
 import 'SettingFile.dart';
 
@@ -245,6 +247,18 @@ class DashboardFileState extends State<DashboardFile>
       {
         setState(() {
         Screenview=GymListFile(callback: this.callback,);
+        });
+      }
+      if(state==phoneass.exercise)
+      {
+        setState(() {
+        Screenview=ExerciseHeaderFile(callback: this.callback,);
+        });
+      }
+ if(state==phoneass.workout)
+      {
+        setState(() {
+        Screenview=WorkoutsFile(callback: this.callback,);
         });
       }
 

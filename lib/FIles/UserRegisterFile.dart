@@ -329,7 +329,19 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
       "bodyfat":FieldValue.arrayUnion([{"date":formattedDate,"value":"0"}]),
       "waist":FieldValue.arrayUnion([{"date":formattedDate,"value":"0"}]),
       "bookmarkslist":[],
-      "img":""
+      "subscriptionlist":[],
+      "paymentlist":[],
+      "personalgoals":[],
+      "aboutmeshow":false,
+      "followers":"0",
+      "following":"0",
+      "followersarray":[],
+      "followingarray":[],
+      "healthindicatorshow":false,
+      "img":"",
+      "pressure":"0",
+      "pulse":"0",
+      "caloriesburned":"0",
 
     };
     PrefrencesManager.setBool(Stringconstants.LOGIN, true);

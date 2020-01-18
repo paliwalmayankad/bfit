@@ -1,7 +1,10 @@
 import 'package:bfit/Models/Bookmarkmodels.dart';
+import 'package:bfit/Models/ExerciseDetailTitleModel.dart';
+import 'package:bfit/Models/ExerciseHEaderModel.dart';
 import 'package:bfit/Models/GymListModels.dart';
 import 'package:bfit/Models/HomeGridItemModel.dart';
 import 'package:bfit/Models/NewsModels.dart';
+import 'package:bfit/Models/UserprofileModels.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
 import 'package:bfit/Utils/PrefrencesManager.dart';
 import 'package:bfit/Utils/Stringconstants.dart';
@@ -102,6 +105,7 @@ return gridmodel;
       newsmodels.uploadername=list[i].data["uploadername"];
       newsmodels.bookmarkuserlist=list[i].data["bookmarks"];
       newsmodels.description=list[i].data["description"];
+      newsmodels.uploaderid=list[i].data["uploaderid"];
 
      /* List<dynamic> bookmarklist=new List();
       bookmarklist=list[i].data["bookmarks"];
@@ -185,6 +189,7 @@ return bookmarklist;
 //// GET GYM LIST AND DETAIL
   static Future<List<GymListModels>> getGymListandDEtail() async{
     List<GymListModels> gymlist= List();
+    List<GymPlans> gymplanslist=List();
     QuerySnapshot querySnapshot = await Firestore.instance.collection("Gyms").getDocuments();
     var list = querySnapshot.documents;
     for(int i=0;i<list.length;i++){
@@ -201,21 +206,75 @@ return bookmarklist;
       gymmodels.openingtimeevening=list[i].data["opentimeevening"];
       gymmodels.openingtimemorning=list[i].data["opentimemorning"];
 
-      gymmodels.gymplans=list[i].data["gymplans"];
+
       gymmodels.rating=double.parse(list[i].data["rating"]);
-      gymmodels.userspaidlsit=list[i].data["userreservationlistforpay"];
+     // gymmodels.userspaidlsit=list[i].data["userreservationlistforpay"];
+
+      var userslist=list[i].data["userreservationlistforpay"];
+      List<GymPlans> useraddedlist=new List();
+      for(int i=0;i<userslist.length;i++){
+        try{
+          GymPlans gymplans = new GymPlans();
+          Map<dynamic, dynamic> map = userslist[i];
+          gymplans.userid = map["userid"];
+
+          gymplans.timeslot = map["timeslot"];
+          gymplans.subscriptionid = map["subscriptionid"];
+
+          gymplans.purchaseplan = map["purchaseplan"];
+
+
+
+
+
+          useraddedlist.add(gymplans);
+        }
+        catch(e){
+          print(e);
+        }
+
+      }
+      gymmodels.userspaidlsit =useraddedlist;
+
       gymmodels.uservisited=list[i].data["description"];
 
+
+      var lists = list[i].data["gymplans"];
+      for(int i=0;i<lists.length;i++) {
+        try {
+          GymPlans gymplans = new GymPlans();
+          Map<dynamic, dynamic> map = lists[i];
+          gymplans.duration = map["duration"];
+
+          gymplans.price = map["payment"];
+
+
+          gymplanslist.add(gymplans);
+        }
+        catch (e) {
+          print(e);
+        }
+      }
+gymmodels.gymplans=gymplanslist;
 
 
       String userid=PrefrencesManager.getString(Stringconstants.USERID);
       //// CHECK user visited  OR NOT
       try {
         for (int i = 0; i < gymmodels.userspaidlsit.length; i++) {
-          if (userid == gymmodels.userspaidlsit[i]) {
+          if(gymmodels.userspaidlsit[i].userid!=""){
+          if (userid == gymmodels.userspaidlsit[i].userid) {
             gymmodels.uservisited = true;
             break;
           }
+          else{
+            gymmodels.uservisited = false;
+          }
+        }
+          else{
+            gymmodels.uservisited = false;
+          }
+
         }
 
       }
@@ -226,10 +285,144 @@ return bookmarklist;
 
       gymlist.add(gymmodels);
 
-    }
+
 
 
     return gymlist;
+
+  }
+
+}
+
+///// GET USERDETAIL
+static Future<UserprofileModels> getuserdetail() async {
+    try {
+      UserprofileModels umodels = new UserprofileModels();
+      Firestore.instance.collection("users").document(
+          PrefrencesManager.getString(Stringconstants.USERID)).get().then((
+          userdata) {
+        umodels.aboutmeshow = userdata['aboutmeshow'];
+        umodels.address = userdata['address'];
+        umodels.age = userdata['age'];
+        umodels.caloriesburned = userdata['caloriesburned'];
+        umodels.email = userdata['email'];
+        umodels.followers = userdata['followers'];
+        umodels.following = userdata['following'];
+        umodels.gender = userdata['gender'];
+        umodels.healthindicatorshow = userdata['healthindicatorshow'];
+        umodels.name = userdata['name'];
+        umodels.pressure = userdata['pressure'];
+        umodels.pulse = userdata['pulse'];
+
+
+        return umodels;
+      });
+    }catch(e){
+      print(e);
+    }
+    
+}
+
+
+//// GET EXERCISE MASTER
+  static Future<List<ExerciseHEaderModel>> getexercisemaster() async{
+    List<ExerciseHEaderModel> exercisemaster= List();
+    QuerySnapshot querySnapshot = await Firestore.instance.collection("exercisemaster").getDocuments();
+    var list = querySnapshot.documents;
+    for(int i=0;i<list.length;i++)
+    {
+      ExerciseHEaderModel exercvisemodel =new ExerciseHEaderModel();
+      exercvisemodel.exerciseid=list[i].documentID;
+      exercvisemodel.exercisetitle=list[i].data["exercisetitle"];
+      exercvisemodel.exerciseimage=list[i].data["exerciseimage"];
+      exercvisemodel.exerciseheaderlist=list[i].data["exercises"];
+       exercisemaster.add(exercvisemodel);
+
+    }
+
+
+    return exercisemaster;
+
+  }
+
+  //// GET EXERCISE LIST
+  static Future<List<ExerciseDetailTitleModel>> getexerciselist(List exerciseheaderlsit) async{
+    try{
+
+
+    List<ExerciseDetailTitleModel> exercisemaster= List();
+    for(int i=0;i<exerciseheaderlsit.length;i++){
+      DocumentSnapshot querySnapshot = await Firestore.instance.collection("exercises").document(exerciseheaderlsit[i]).get();
+      var list = querySnapshot;
+
+      ExerciseDetailTitleModel exercvisemodel =new ExerciseDetailTitleModel();
+      exercvisemodel.exerciseid=list.documentID;
+      exercvisemodel.exercisebodypartname=list.data["exercisebodypartname"];
+      exercvisemodel.exercisername=list.data["exercisename"];
+      exercvisemodel.exerciseimg=list.data["exerciseicon"];
+
+      exercvisemodel.bookmarks=list.data["bookmark"];
+      exercvisemodel.dislikes=list.data["dislikes"];
+      exercvisemodel.likes=list.data["likes"];
+      exercvisemodel.steps=list.data["steps"];
+      exercvisemodel.exercisedetail=list.data["detail"];
+      exercvisemodel.youtubeurllink=list.data["urilink"];
+      String userid=PrefrencesManager.getString(Stringconstants.USERID);
+      //// CHECK BOOKMARK OR NOT
+      try {
+        for (int i = 0; i < exercvisemodel.bookmarks.length; i++) {
+          if (userid == exercvisemodel.bookmarks[i]) {
+            exercvisemodel.bookmark = true;
+            break;
+          }
+        }
+        //// CHECK FOR PAGE LIKE
+        for (int i = 0; i < exercvisemodel.likes.length; i++) {
+          if (userid == exercvisemodel.likes[i]) {
+            exercvisemodel.like = true;
+            break;
+          }
+        }
+        //// CHECK FOR PAGE DISLIKE
+
+        for (int i = 0; i < exercvisemodel.dislikes.length; i++) {
+          if (userid == exercvisemodel.dislikes[i]) {
+            exercvisemodel.dislike = true;
+            break;
+          }
+        }}catch(e)
+    {
+      print(e);
+    }
+
+      //// ADD STEPS WITH IMAGE AND STEPS TEXT
+try {
+  for (int i = 0; i < exercvisemodel.steps.length; i++) {
+    Stepsmodule smodule = new Stepsmodule();
+    Map<dynamic, dynamic> data = exercvisemodel.steps[i];
+    smodule.stepsimg = data['img'];
+    smodule.steps = data['stepsdetail'];
+    exercvisemodel.stepswithimg.add(smodule);
+  }
+}
+catch(e){
+        print(e);
+}
+
+      exercisemaster.add(exercvisemodel);
+    }
+    return exercisemaster;
+    }
+    catch(e)
+    {
+      print(e);
+    }
+
+
+
+
+
+
 
   }
 

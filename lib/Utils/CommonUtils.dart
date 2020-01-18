@@ -1,6 +1,7 @@
 import 'package:bfit/FIles/BodyParametersFIle.dart';
 import 'package:bfit/FIles/CreateNewsFIle.dart';
 import 'package:bfit/FIles/DashboardFile.dart';
+import 'package:bfit/FIles/ExerciseHeaderFile.dart';
 import 'package:bfit/FIles/GymDetailFile.dart';
 import 'package:bfit/FIles/HealthIndicatorFile.dart';
 import 'package:bfit/FIles/UserRegisterFile.dart';
@@ -19,6 +20,7 @@ class CommonUtils{
       '/viewmyprofile': (context) => ViewMyPRofile(),
       '/createnewsfile': (context) => CreateNewsFile(),
       '/gymdetailfile': (context) => GymDetailFile(),
+      '/exerciseheaderfile': (context) => ExerciseHeaderFile(),
 
 
     };

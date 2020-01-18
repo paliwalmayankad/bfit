@@ -284,7 +284,7 @@ class _CreateNEwsFileState extends State<CreateNewsFile> with TickerProviderStat
       'dislikes':[],
     'uploaderid': PrefrencesManager.getString(Stringconstants.USERID),
       'image': url,
-      "time":UiViewsWidget.getcurrentdateasrequireformat("EEE, dd/MMM/yyyy hh:mm a"),
+      "time":UiViewsWidget.getcurrentdateasrequireformat("EEE, dd/MMM/yyyy HH:mm:ss"),
       "uploaderimage":PrefrencesManager.getString(Stringconstants.USERPHOTO),
       "uploadername":PrefrencesManager.getString(Stringconstants.NAME),
 

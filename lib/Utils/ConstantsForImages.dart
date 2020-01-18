@@ -13,6 +13,7 @@ class ConstantsForImages{
   static String imgplaceholder='assets/imgplaceholder.jpg';
 
   static String bfitbackground='assets/background.png';
+  static String doodlemaximage='assets/doodle_fitness.png';
   static String messagesendicon='assets/sendicon.png';
 
   //// DRAWER ICON
@@ -42,6 +43,15 @@ class ConstantsForImages{
   static String undislikepage='assets/dislike.png';
   static String bookmark='assets/bookmark.png';
   static String bookmarked='assets/bookmarked.png';
+  static String achivements='assets/achievments.png';
+  static String aboutus='assets/about-us.png';
+  static String mapamrk='assets/mapmark.png';
+  static String aboutme='assets/abhut-me.png';
+  static String personalgoals='assets/personal-goals.png';
+  static String healthindicator='assets/health-indicators.png';
+  static String youtubeicon='assets/youtube.png';
+  static String exercisedetailsteps='assets/details.png';
+  static String exercisestepsicon='assets/steps.png';
 
 
 

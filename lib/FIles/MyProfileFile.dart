@@ -92,7 +92,7 @@ class _MyPRofileCreateState extends State<MyProfileFile> with TickerProviderStat
 
          Container(margin: EdgeInsets.only(top: 20), height: 120,width: 120,child:
              InkWell(onTap: (){
-               imagePicker.showDialog(context);
+              // imagePicker.showDialog(context);
 
              }, child:
 

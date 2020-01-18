@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:bfit/FireBasePackage/FireBase.dart';
 import 'package:bfit/ImageHandler/ImagePickerHandler.dart';
 import 'package:bfit/Models/UserprofileModels.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
@@ -9,18 +8,21 @@ import 'package:bfit/Utils/PrefrencesManager.dart';
 import 'package:bfit/Utils/Stringconstants.dart';
 import 'package:bfit/Utils/UiViewsWidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ViewMyPRofile extends StatefulWidget{
+class UserShowProfile extends StatefulWidget{
+  final userid;
+  const UserShowProfile({Key key,this.userid}): super(key:key);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _ViewmyprofileState();
+    return UserShowProfileState();
   }
+
 }
-class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateMixin,ImagePickerListener {
+class UserShowProfileState extends State<UserShowProfile> with TickerProviderStateMixin {
+
   String aboutme="Public";
   String healthindicator="Public";
   List<dynamic> usergoalslist;
@@ -28,24 +30,19 @@ class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateM
   UserprofileModels umodels;
   String userimage;
   File _image;
+  String followtext="Follow";
+  String blocktext="Block";
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ImagePickerHandler imagePicker;
   AnimationController _controller;
+int followers=0;
+int following=0;
   @override
   void initState() {
-    // TODO: implement
-    //  initState
+    // TODO: implement initState
     super.initState();
     usergoalslist=new List();
-    _controller = new AnimationController(
-      vsync: this,
 
-      duration: const Duration(milliseconds: 500),
-    );
-
-
-    imagePicker=new ImagePickerHandler(this,_controller);
-    imagePicker.init();
     _calluserdetailget();
   }
   @override
@@ -68,30 +65,7 @@ class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateM
                   fit: BoxFit.fill,
                   image: NetworkImage(userimage), placeholder: AssetImage(ConstantsForImages.imgplaceholder),),
 
-              InkWell(
 
-                  onTap: (){
-                    imagePicker.showDialog(context);
-
-
-
-                  },
-                  child: Container(decoration: UiViewsWidget.lightgreycolorsquaretrans(),height:240,
-                    width:  double.infinity,
-                    child: Align( alignment:Alignment.bottomCenter,
-                      child:Padding(padding: EdgeInsets.only(bottom: 5),
-                        child:Container(padding: EdgeInsets.only(top: 5,bottom: 5,left: 15,right: 15),
-                            decoration: BoxDecoration( border: Border.all(
-                                width: 1.0,color: Colors.white
-
-                            ),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(15.0) //                 <--- border radius here
-                              ),),
-                            child:
-                            Text("Update profile",
-                              style: TextStyle(color: Colors.white,),textAlign: TextAlign.center,)),),
-                    )))
               ],
             ),
 
@@ -113,7 +87,7 @@ class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateM
                     Expanded(flex:1,child: Column(children: <Widget>[
                       Text("Followers",maxLines:1,style: TextStyle(color: MyColors.basetextcolor,fontSize:18,fontWeight: FontWeight.bold),),
                       SizedBox(height:10),
-                      Text(umodels.followers,maxLines:1,style: TextStyle(color: MyColors.basetextcolor,fontSize: 15,),)
+                      Text(followers.toString(),maxLines:1,style: TextStyle(color: MyColors.basetextcolor,fontSize: 15,),)
 
 
                     ],)),
@@ -121,34 +95,50 @@ class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateM
                     Expanded(flex:1,child:Column(children: <Widget>[
                       Text("Following",maxLines:1,style: TextStyle(color: MyColors.basetextcolor,fontSize:18,fontWeight: FontWeight.bold),),
                       SizedBox(height:10),
-                      Text(umodels.following,maxLines:1,style: TextStyle(color: MyColors.basetextcolor,fontSize: 15,),)
+                      Text(following.toString(),maxLines:1,style: TextStyle(color: MyColors.basetextcolor,fontSize: 15,),)
 
 
                     ],))
 
                   ],),
                   SizedBox(height: 15,),
+                  //// SHOW FOLLOW MESSAGE AND BLOCK BUTTON
+                widget.userid!=PrefrencesManager.getString(Stringconstants.USERID)?  Row(children: <Widget>[
+                    ///FOLLOW BUTTON
+
+                    Expanded(child:InkWell(onTap:(){
+                      _updatestatusforfollowfollowing();
+                    },child: Container(
+                      margin: EdgeInsets.only(left: 4,right: 4),padding: EdgeInsets.only(top: 7,bottom: 7),
+                      decoration:UiViewsWidget.whiteboxroundeddecorationwithborder(),
+
+                      child: Text(followtext,textAlign:TextAlign.center,style: TextStyle(color: MyColors.basetextcolor),),),)),
+                    Expanded(child:InkWell(
+
+                      child: Container( padding: EdgeInsets.only(top: 7,bottom: 7),margin: EdgeInsets.only(left: 4,right: 4),decoration:UiViewsWidget.whiteboxroundeddecorationwithborder(),
+
+                      child: Text("Message",textAlign:TextAlign.center,style: TextStyle(color: MyColors.basetextcolor),),),)),
+                    Expanded(child:InkWell(child: Container(padding: EdgeInsets.only(top: 7,bottom: 7), margin: EdgeInsets.only(left: 4,right: 4),decoration:UiViewsWidget.whiteboxroundeddecorationwithborder(),
+
+                      child: Text(blocktext,textAlign:TextAlign.center,style: TextStyle(color: MyColors.basetextcolor),),),)),
+
+
+                  ],):SizedBox(),
+
+
+                  SizedBox(height: 15,),
                   //// ABOUT ME LABEL
                   Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
                     Expanded(child:Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Image.asset(ConstantsForImages.aboutme,height: 30,width: 30,),
-                        SizedBox(width: 10,),
+
+                        SizedBox(width: 1,),
                         Text("About Me:",textAlign:TextAlign.left,style: TextStyle(color: MyColors.basetextcolor,fontWeight: FontWeight.bold,fontSize: 16),),
 
                       ],
                     )),
 
-                    //// HIDE OR UNHIDE ABOUT ME BUTTON
-                    InkWell(
-                      onTap: (){
 
-                        _aboutmechangestatus(aboutme);
-
-                      },
-
-                      child: Container(decoration: UiViewsWidget.greenboxbutton(),padding: EdgeInsets.only(left: 22,top: 12,bottom: 12,right: 22),
-                      child: Text(aboutme,textAlign:TextAlign.left,style: TextStyle(color: MyColors.basetextcolor,fontSize: 14),) ,),),
 
                   ],),
                   ////ABOUT ME VALUE
@@ -166,9 +156,9 @@ class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateM
                   SizedBox(height: 15,),
                   Container(margin: EdgeInsets.only(left: 5),
                     child: Row(
-                      children: <Widget>[Image.asset(ConstantsForImages.personalgoals,height: 30,width: 30,),
-                        SizedBox(width: 10,),
-                        Text("Personal Goals: ",textAlign:TextAlign.left,style: TextStyle(color: MyColors.basetextcolor,fontWeight: FontWeight.bold,fontSize: 16),),
+                      children: <Widget>[
+                        SizedBox(width: 1,),
+                        Text("Personal Goals:",textAlign:TextAlign.left,style: TextStyle(color: MyColors.basetextcolor,fontWeight: FontWeight.bold,fontSize: 16),),
 
                       ],
                     ),
@@ -196,23 +186,13 @@ class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateM
                   Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
                     Expanded(child:Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Image.asset(ConstantsForImages.healthindicator,height: 30,width: 30,),
-                        SizedBox(width: 10,),
+
+                        SizedBox(width: 1,),
                         Text("Health indicators:",textAlign:TextAlign.left,style: TextStyle(color: MyColors.basetextcolor,fontWeight: FontWeight.bold,fontSize: 16),),
 
                       ],
                     )),
 
-                    //// HIDE OR UNHIDE ABOUT ME BUTTON
-                    InkWell(
-
-                      onTap: (){
-
-                        healthindicatorchangestatus(healthindicator);
-
-                      },
-                      child: Container(decoration: UiViewsWidget.greenboxbutton(),padding: EdgeInsets.only(left: 22,top: 12,bottom: 12,right: 22),
-                      child: Text(healthindicator,textAlign:TextAlign.left,style: TextStyle(color: MyColors.basetextcolor,fontWeight: FontWeight.bold,fontSize: 14),) ,),),
 
                   ],),
                   ////ABOUT ME VALUE
@@ -262,7 +242,7 @@ class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateM
     try {
       UserprofileModels pumodels = new UserprofileModels();
       Firestore.instance.collection("users").document(
-          PrefrencesManager.getString(Stringconstants.USERID)).get().then((
+          widget.userid).get().then((
           userdata) {
         pumodels.aboutmeshow = userdata['aboutmeshow'];
         pumodels.address = userdata['address'];
@@ -279,18 +259,39 @@ class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateM
         pumodels.followingarray=userdata['followingarray'];
         pumodels.followers = pumodels.followersarray.length.toString();
         pumodels.following = pumodels.followingarray.length.toString();
+        followers=int.parse( pumodels.followers);
+        following=pumodels.followingarray.length;
         usergoalslist=userdata['personalgoals'];
         userimage=userdata['img'];
+String userd=PrefrencesManager.getString(Stringconstants.USERID);
+        for(int i=0;i<pumodels.followersarray.length;i++){
+          try {
+            if (userd == pumodels.followersarray[i]) {
+              setState(() {
+                followtext = "Following";
+              });
+              break;
+            }
+            else {
+              setState(() {
+                followtext = "Follow";
+              });
+            }
+          }catch(e)
+        {
+          print(e);
+        }
+}
 
-         umodels=pumodels;
-if(umodels.aboutmeshow==false){
-  setState(() {
-    aboutme="Private";
-  });
-}
-else{
-  aboutme="Public";
-}
+        umodels=pumodels;
+        if(umodels.aboutmeshow==false){
+          setState(() {
+            aboutme="Private";
+          });
+        }
+        else{
+          aboutme="Public";
+        }
         if(umodels.healthindicatorshow==false){
           setState(() {
             healthindicator="Private";
@@ -299,9 +300,9 @@ else{
         else{
           healthindicator="Public";
         }
-         setState(() {
-           mainstate=true;
-         });
+        setState(() {
+          mainstate=true;
+        });
       });
     }catch(e){
       print(e);
@@ -310,111 +311,49 @@ else{
 
   }
 
-  @override
-  userImage(File _image) {
-    // TODO: implement userImage
-    _callmethodtoupdatefile(_image);
+  _updatestatusforfollowfollowing() {
+    if(followtext=="Following"){
+      /// UNFOLLOW
+      //// UPDATE AT TWO TABLE FIRST TO FOLLOW and SECOND FOLLOWERS
 
-  }
-
-  void _callmethodtoupdatefile(File image) async {
-try {
-  UiViewsWidget.showprogressdialogcomplete(context, true);
-
-
-  StorageReference ref =
-  FirebaseStorage.instance.ref().child(
-      PrefrencesManager.getString(Stringconstants.MOBILE)).child(
-      PrefrencesManager.getString(Stringconstants.NAME) + "userprofile.jpg");
-  StorageUploadTask uploadTask = ref.putFile(image);
-  final StorageTaskSnapshot downloadUrl =
-  (await uploadTask.onComplete);
-  final String url = (await downloadUrl.ref.getDownloadURL());
-
-  /* final String url = (await uploadTask.ref.getDownloadURL());
-      return await (await uploadTask.onComplete).ref.getDownloadURL();*/
-
-  /// NOW HERE WE REGISTER USER AND HIS COMPLETE DATA
-  Map<String, dynamic> updatemap = {"img": url};
-  Firestore.instance.collection("users").document(
-      PrefrencesManager.getString(Stringconstants.USERID))
-      .updateData(updatemap)
-      .then((documentReference) {
-
-    /// SAVE VALUES TO SHAREDPREFRENCES
-    UiViewsWidget.showprogressdialogcomplete(context, false);
-
-    setState(() {
-      userimage = url;
-    });
-    UiViewsWidget.bottomsnackbar(
-        context, "Profile changed", _scaffoldKey);
-
-  }).catchError((e) {
-    UiViewsWidget.showprogressdialogcomplete(context, false);
-
-    print(e);
-    UiViewsWidget.bottomsnackbar(
-        context, "Soory couldnot update profile now", _scaffoldKey);
-  });
-}
-catch(e)
-    {
-      print(e);
-      UiViewsWidget.bottomsnackbar(
-          context, "Soory couldnot update profile now", _scaffoldKey);
-    }
-
-  }
-
-  void _aboutmechangestatus(String ame) {
-    if(ame=="Public"){
-      /// KEEP ME PRIVATE
-        Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID))
-            .updateData({"aboutmeshow":false}).then((updateduserdata){
-          setState(() {
-            aboutme="Private";
-          });
-
+      Firestore.instance.collection("users").document(widget.userid).updateData({"followersarray":FieldValue.arrayRemove([PrefrencesManager.getString(Stringconstants.USERID)])}).then((followingtosdata){
+        setState(() {
+          // following=pumodels.followersarray.length;
+          followers=followers-1;
+          followtext="Follow";
         });
 
-    }
-    else
-      {
-        /// KEEP ME PUBLIC
-           Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID))
-                    .updateData({"aboutmeshow":true}).then((updateduserdata){
-             setState(() {
-               aboutme="Public";
-             });
-           });
 
-    }
+        //// add in my list
+        Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID)).updateData({"followingarray":FieldValue.arrayRemove([widget.userid])}).then((updatedmydata){
 
-  }
-
-  void healthindicatorchangestatus(String hic) {
-    if(hic=="Public"){
-      /// KEEP ME PRIVATE
-      Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID))
-          .updateData({"healthindicatorshow":false}).then((updateduserdata){
-        setState(() {
-          healthindicator="Private";
         });
 
       });
-
-    }
-    else
-    {
-      /// KEEP ME PUBLIC
-      Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID))
-          .updateData({"healthindicatorshow":true}).then((updateduserdata){
-        setState(() {
-          healthindicator="Public";
-        });
+      
+      setState(() {
+        followtext="Follow";
       });
-
+      
     }
+    else{
+      Firestore.instance.collection("users").document(widget.userid).updateData({"followersarray":FieldValue.arrayUnion([PrefrencesManager.getString(Stringconstants.USERID)])}).then((followingtosdata){
+        setState(() {
+          // following=pumodels.followersarray.length;
+          followers=followers+1;
+          followtext="Following";
+        });
+
+
+        //// add in my list
+        Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID)).updateData({"followingarray":FieldValue.arrayUnion([widget.userid])}).then((updatedmydata){
+
+        });
+
+      });
+    }
+    
   }
+
+
 }
