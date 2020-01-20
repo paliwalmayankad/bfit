@@ -198,6 +198,22 @@ FireBase.getbookmarklist().then((bookmarkdata){
             .document(bookmarklsit.id)
             .updateData(map);
       }
+      else if(bookmarklsit.category=="Workout"){
+        Map<String, dynamic> map = {
+          "bookmarks": FieldValue.arrayUnion([userid])
+        };
+        Firestore.instance.collection('workouts')
+            .document(bookmarklsit.id)
+            .updateData(map);
+      }
+      else if(bookmarklsit.category=="Exercises"){
+        Map<String, dynamic> map = {
+          "bookmark": FieldValue.arrayUnion([userid])
+        };
+        Firestore.instance.collection('exercises')
+            .document(bookmarklsit.id)
+            .updateData(map);
+      }
 
     }
     else{
@@ -241,6 +257,23 @@ if(bookmarklsit.category=="News") {
       .document(bookmarklsit.id)
       .updateData(map);
 }
+else if(bookmarklsit.category=="Workout"){
+  Map<String, dynamic> map = {
+    "bookmarks": FieldValue.arrayRemove([userid])
+  };
+  Firestore.instance.collection('workouts')
+      .document(bookmarklsit.id)
+      .updateData(map);
+}
+else if(bookmarklsit.category=="Exercises"){
+  Map<String, dynamic> map = {
+    "bookmark": FieldValue.arrayRemove([userid])
+  };
+  Firestore.instance.collection('exercises')
+      .document(bookmarklsit.id)
+      .updateData(map);
+}
+
         }
         catch(e){
           print(e);

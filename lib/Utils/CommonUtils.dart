@@ -6,7 +6,10 @@ import 'package:bfit/FIles/GymDetailFile.dart';
 import 'package:bfit/FIles/HealthIndicatorFile.dart';
 import 'package:bfit/FIles/UserRegisterFile.dart';
 import 'package:bfit/FIles/ViewMyPRofile.dart';
+import 'package:bfit/main.dart';
 import 'package:flutter/material.dart';
+
+
 
 class CommonUtils{
  static dynamic returnroutes(BuildContext context){
@@ -21,6 +24,7 @@ class CommonUtils{
       '/createnewsfile': (context) => CreateNewsFile(),
       '/gymdetailfile': (context) => GymDetailFile(),
       '/exerciseheaderfile': (context) => ExerciseHeaderFile(),
+
 
 
     };

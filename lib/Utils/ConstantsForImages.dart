@@ -52,6 +52,13 @@ class ConstantsForImages{
   static String youtubeicon='assets/youtube.png';
   static String exercisedetailsteps='assets/details.png';
   static String exercisestepsicon='assets/steps.png';
+//// SETTING SCREE ICON
+  static String appversion='assets/app-version.png';
+  static String settingaboutus='assets/b-fit-about.png';
+  static String blockuser='assets/blockuser.png';
+  static String settinghelp='assets/help.png';
+  static String settingnotification='assets/notifications.png';
+  static String settinglogout='assets/log-out.png';
 
 
 

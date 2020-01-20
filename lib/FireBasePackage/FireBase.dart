@@ -5,6 +5,7 @@ import 'package:bfit/Models/GymListModels.dart';
 import 'package:bfit/Models/HomeGridItemModel.dart';
 import 'package:bfit/Models/NewsModels.dart';
 import 'package:bfit/Models/UserprofileModels.dart';
+import 'package:bfit/Models/WorkoutModels.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
 import 'package:bfit/Utils/PrefrencesManager.dart';
 import 'package:bfit/Utils/Stringconstants.dart';
@@ -48,7 +49,7 @@ class FireBase {
 
       }
       else
-        {
+      {
 
         return false;
 
@@ -72,26 +73,26 @@ class FireBase {
 
   static Future<List<HomeGridItemModel>> getserviceslist() async{
     List<HomeGridItemModel> gridmodel= List();
-  QuerySnapshot querySnapshot = await Firestore.instance.collection("services").getDocuments();
-  var list = querySnapshot.documents;
-for(int i=0;i<list.length;i++){
-  HomeGridItemModel hmodel =new HomeGridItemModel();
-  hmodel.documentid=list[i].documentID;
-  hmodel.texttitle=list[i].data["title"];
-  hmodel.img=list[i].data["img"];
-  hmodel.timeduration=list[i].data["validtimeforbuy"];
-  hmodel.priceforbuy=list[i].data["price"];
-  hmodel.facilities=list[i].data["facilities"];
-  gridmodel.add(hmodel);
+    QuerySnapshot querySnapshot = await Firestore.instance.collection("services").getDocuments();
+    var list = querySnapshot.documents;
+    for(int i=0;i<list.length;i++){
+      HomeGridItemModel hmodel =new HomeGridItemModel();
+      hmodel.documentid=list[i].documentID;
+      hmodel.texttitle=list[i].data["title"];
+      hmodel.img=list[i].data["img"];
+      hmodel.timeduration=list[i].data["validtimeforbuy"];
+      hmodel.priceforbuy=list[i].data["price"];
+      hmodel.facilities=list[i].data["facilities"];
+      gridmodel.add(hmodel);
 
-}
-return gridmodel;
+    }
+    return gridmodel;
 
   }
   static Future<List<NewsModels>> getnewslist() async{
     List<NewsModels> newslsit= List();
-  QuerySnapshot querySnapshot = await Firestore.instance.collection("news").getDocuments();
-  var list = querySnapshot.documents;
+    QuerySnapshot querySnapshot = await Firestore.instance.collection("news").getDocuments();
+    var list = querySnapshot.documents;
     for(int i=0;i<list.length;i++){
       NewsModels newsmodels =new NewsModels();
       newsmodels.newsid=list[i].documentID;
@@ -107,7 +108,7 @@ return gridmodel;
       newsmodels.description=list[i].data["description"];
       newsmodels.uploaderid=list[i].data["uploaderid"];
 
-     /* List<dynamic> bookmarklist=new List();
+      /* List<dynamic> bookmarklist=new List();
       bookmarklist=list[i].data["bookmarks"];
 
       List<dynamic> likeslist=new List();
@@ -142,24 +143,24 @@ return gridmodel;
         }
       }
       catch(e)
-    {
-      print(e);
-    }
+      {
+        print(e);
+      }
 
       newslsit.add(newsmodels);
 
     }
 
 
-return newslsit;
+    return newslsit;
 
   }
 
 
   static Future<List<Bookmarkmodels>> getbookmarklist() async{
     List<Bookmarkmodels> bookmarklist= List();
-  var querySnapshot = await Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID)).get();
-  var list = querySnapshot.data['bookmarkslist'];
+    var querySnapshot = await Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID)).get();
+    var list = querySnapshot.data['bookmarkslist'];
     for(int i=0;i<list.length;i++){
       try {
         Bookmarkmodels bookmarkmo = new Bookmarkmodels();
@@ -175,14 +176,14 @@ return newslsit;
         bookmarklist.add(bookmarkmo);
       }
       catch(e)
-    {
-      print(e);
-    }
+      {
+        print(e);
+      }
 
     }
 
 
-return bookmarklist;
+    return bookmarklist;
 
   }
 
@@ -208,7 +209,7 @@ return bookmarklist;
 
 
       gymmodels.rating=double.parse(list[i].data["rating"]);
-     // gymmodels.userspaidlsit=list[i].data["userreservationlistforpay"];
+      // gymmodels.userspaidlsit=list[i].data["userreservationlistforpay"];
 
       var userslist=list[i].data["userreservationlistforpay"];
       List<GymPlans> useraddedlist=new List();
@@ -255,7 +256,7 @@ return bookmarklist;
           print(e);
         }
       }
-gymmodels.gymplans=gymplanslist;
+      gymmodels.gymplans=gymplanslist;
 
 
       String userid=PrefrencesManager.getString(Stringconstants.USERID);
@@ -263,14 +264,14 @@ gymmodels.gymplans=gymplanslist;
       try {
         for (int i = 0; i < gymmodels.userspaidlsit.length; i++) {
           if(gymmodels.userspaidlsit[i].userid!=""){
-          if (userid == gymmodels.userspaidlsit[i].userid) {
-            gymmodels.uservisited = true;
-            break;
+            if (userid == gymmodels.userspaidlsit[i].userid) {
+              gymmodels.uservisited = true;
+              break;
+            }
+            else{
+              gymmodels.uservisited = false;
+            }
           }
-          else{
-            gymmodels.uservisited = false;
-          }
-        }
           else{
             gymmodels.uservisited = false;
           }
@@ -288,14 +289,14 @@ gymmodels.gymplans=gymplanslist;
 
 
 
-    return gymlist;
+      return gymlist;
+
+    }
 
   }
 
-}
-
 ///// GET USERDETAIL
-static Future<UserprofileModels> getuserdetail() async {
+  static Future<UserprofileModels> getuserdetail() async {
     try {
       UserprofileModels umodels = new UserprofileModels();
       Firestore.instance.collection("users").document(
@@ -320,8 +321,8 @@ static Future<UserprofileModels> getuserdetail() async {
     }catch(e){
       print(e);
     }
-    
-}
+
+  }
 
 
 //// GET EXERCISE MASTER
@@ -336,7 +337,7 @@ static Future<UserprofileModels> getuserdetail() async {
       exercvisemodel.exercisetitle=list[i].data["exercisetitle"];
       exercvisemodel.exerciseimage=list[i].data["exerciseimage"];
       exercvisemodel.exerciseheaderlist=list[i].data["exercises"];
-       exercisemaster.add(exercvisemodel);
+      exercisemaster.add(exercvisemodel);
 
     }
 
@@ -350,68 +351,69 @@ static Future<UserprofileModels> getuserdetail() async {
     try{
 
 
-    List<ExerciseDetailTitleModel> exercisemaster= List();
-    for(int i=0;i<exerciseheaderlsit.length;i++){
-      DocumentSnapshot querySnapshot = await Firestore.instance.collection("exercises").document(exerciseheaderlsit[i]).get();
-      var list = querySnapshot;
+      List<ExerciseDetailTitleModel> exercisemaster= List();
+      for(int i=0;i<exerciseheaderlsit.length;i++){
+        DocumentSnapshot querySnapshot = await Firestore.instance.collection("exercises").document(exerciseheaderlsit[i]).get();
+        var list = querySnapshot;
 
-      ExerciseDetailTitleModel exercvisemodel =new ExerciseDetailTitleModel();
-      exercvisemodel.exerciseid=list.documentID;
-      exercvisemodel.exercisebodypartname=list.data["exercisebodypartname"];
-      exercvisemodel.exercisername=list.data["exercisename"];
-      exercvisemodel.exerciseimg=list.data["exerciseicon"];
+        ExerciseDetailTitleModel exercvisemodel =new ExerciseDetailTitleModel();
+        exercvisemodel.exerciseid=list.documentID;
+        exercvisemodel.exercisebodypartname=list.data["exercisebodypartname"];
+        exercvisemodel.exercisername=list.data["exercisename"];
+        exercvisemodel.exerciseimg=list.data["exerciseicon"];
 
-      exercvisemodel.bookmarks=list.data["bookmark"];
-      exercvisemodel.dislikes=list.data["dislikes"];
-      exercvisemodel.likes=list.data["likes"];
-      exercvisemodel.steps=list.data["steps"];
-      exercvisemodel.exercisedetail=list.data["detail"];
-      exercvisemodel.youtubeurllink=list.data["urilink"];
-      String userid=PrefrencesManager.getString(Stringconstants.USERID);
-      //// CHECK BOOKMARK OR NOT
-      try {
-        for (int i = 0; i < exercvisemodel.bookmarks.length; i++) {
-          if (userid == exercvisemodel.bookmarks[i]) {
-            exercvisemodel.bookmark = true;
-            break;
+        exercvisemodel.bookmarks=list.data["bookmark"];
+        exercvisemodel.dislikes=list.data["dislikes"];
+        exercvisemodel.likes=list.data["likes"];
+        exercvisemodel.steps=list.data["steps"];
+        exercvisemodel.exercisedetail=list.data["detail"];
+        exercvisemodel.youtubeurllink=list.data["urilink"];
+        exercvisemodel.repetation=list.data["repetation"];
+        String userid=PrefrencesManager.getString(Stringconstants.USERID);
+        //// CHECK BOOKMARK OR NOT
+        try {
+          for (int i = 0; i < exercvisemodel.bookmarks.length; i++) {
+            if (userid == exercvisemodel.bookmarks[i]) {
+              exercvisemodel.bookmark = true;
+              break;
+            }
+          }
+          //// CHECK FOR PAGE LIKE
+          for (int i = 0; i < exercvisemodel.likes.length; i++) {
+            if (userid == exercvisemodel.likes[i]) {
+              exercvisemodel.like = true;
+              break;
+            }
+          }
+          //// CHECK FOR PAGE DISLIKE
+
+          for (int i = 0; i < exercvisemodel.dislikes.length; i++) {
+            if (userid == exercvisemodel.dislikes[i]) {
+              exercvisemodel.dislike = true;
+              break;
+            }
+          }}catch(e)
+        {
+          print(e);
+        }
+
+        //// ADD STEPS WITH IMAGE AND STEPS TEXT
+        try {
+          for (int i = 0; i < exercvisemodel.steps.length; i++) {
+            Stepsmodule smodule = new Stepsmodule();
+            Map<dynamic, dynamic> data = exercvisemodel.steps[i];
+            smodule.stepsimg = data['img'];
+            smodule.steps = data['stepsdetail'];
+            exercvisemodel.stepswithimg.add(smodule);
           }
         }
-        //// CHECK FOR PAGE LIKE
-        for (int i = 0; i < exercvisemodel.likes.length; i++) {
-          if (userid == exercvisemodel.likes[i]) {
-            exercvisemodel.like = true;
-            break;
-          }
+        catch(e){
+          print(e);
         }
-        //// CHECK FOR PAGE DISLIKE
 
-        for (int i = 0; i < exercvisemodel.dislikes.length; i++) {
-          if (userid == exercvisemodel.dislikes[i]) {
-            exercvisemodel.dislike = true;
-            break;
-          }
-        }}catch(e)
-    {
-      print(e);
-    }
-
-      //// ADD STEPS WITH IMAGE AND STEPS TEXT
-try {
-  for (int i = 0; i < exercvisemodel.steps.length; i++) {
-    Stepsmodule smodule = new Stepsmodule();
-    Map<dynamic, dynamic> data = exercvisemodel.steps[i];
-    smodule.stepsimg = data['img'];
-    smodule.steps = data['stepsdetail'];
-    exercvisemodel.stepswithimg.add(smodule);
-  }
-}
-catch(e){
-        print(e);
-}
-
-      exercisemaster.add(exercvisemodel);
-    }
-    return exercisemaster;
+        exercisemaster.add(exercvisemodel);
+      }
+      return exercisemaster;
     }
     catch(e)
     {
@@ -424,6 +426,77 @@ catch(e){
 
 
 
+  }
+
+  static Future<List<WorkoutModels>> getmyworkoutlist() async
+  {
+    try{
+      DocumentSnapshot querySnapshot = await   Firestore.instance.collection("users").document(PrefrencesManager.getString(Stringconstants.USERID)).get();
+      List<WorkoutModels> workoutls=new List();
+
+      List<dynamic>workoutlist =querySnapshot.data['userworkoutlist'];
+      for(int i=0;i<workoutlist.length;i++){
+        WorkoutModels wm=new WorkoutModels();
+        Map<dynamic,dynamic> wmmap=workoutlist[i];
+
+        wm.traineraddress=wmmap['traineraddress'];
+        wm.trainerid=wmmap['trainerid'];
+        wm.trainerimg=wmmap['trainerimg'];
+        wm.trainername=wmmap['trainername'];
+        List<dynamic> list=wmmap['trainerworkoutlist'];
+        List<Workoutmodelssec> secondworklist = new List();
+        for(int i=0;i<list.length;i++) {
+          DocumentSnapshot workoutds = await Firestore.instance.collection('workouts')
+              .document(list[i].toString())
+              .get();
+
+          Workoutmodelssec wms = new Workoutmodelssec();
+          wms.workoutid=workoutds.documentID;
+          wms.assigneduserlist=workoutds.data['assigneduser'];
+          wms.description=workoutds.data['description'];
+          wms.duration=workoutds.data['duration'];
+          wms.exerciselsitforworkout=workoutds.data['exerciselistforworkout'];
+          wms.level=workoutds.data['level'];
+          wms.shotdescription=workoutds.data['shortdescription'];
+          wms.title=workoutds.data['title'];
+          wms.workouticon=workoutds.data['workouticon'];
+          wms.bookmarks=workoutds.data['bookmarks'];
+          String userid=PrefrencesManager.getString(Stringconstants.USERID);
+          for (int i = 0; i <  wms.bookmarks.length; i++) {
+            if (userid ==  wms.bookmarks[i]) {
+              wms.bookmark = true;
+              break;
+            }
+          }
+          secondworklist.add(wms);
+
+
+        }
+try {
+  wm.workoutlist = secondworklist;
+
+  workoutls.add(wm);
+}catch(e){
+          print(e);
+}
+
+
+
+
+
+
+      }
+
+
+return workoutls;
+
+
+
+    }
+    catch(e)
+    {
+      print(e);
+    }
   }
 
 }

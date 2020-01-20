@@ -1,3 +1,5 @@
+import 'package:bfit/FireBasePackage/FireBase.dart';
+import 'package:bfit/Models/ExerciseDetailTitleModel.dart';
 import 'package:bfit/Utils/ConstantsForImages.dart';
 import 'package:bfit/Utils/MyColors.dart';
 import 'package:bfit/Utils/UiViewsWidget.dart';
@@ -6,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'ExerciseDetailFile.dart';
 
 class WorkToExerciseListFile extends StatefulWidget{
+   String  title;
+   List<dynamic> exerciselistid;
+   WorkToExerciseListFile({Key key,this.title,this.exerciselistid}): super(key:key);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -14,12 +19,23 @@ class WorkToExerciseListFile extends StatefulWidget{
 }
 class WorkToExerciseListFileState extends State<WorkToExerciseListFile>
 {
+  List<ExerciseDetailTitleModel> exerciselist;
+  bool mainstate=false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    exerciselist=new List();
+    _CALLEXERCISELISTFILE();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(appBar: getAppBar(),
     body: Container(width: double.infinity, color: Colors.white,
-    child: _createbody(),
+    child: mainstate==true?_createbody():Container(child: UiViewsWidget.progressdialogbox(),),
     ),
     );
   }
@@ -48,20 +64,21 @@ class WorkToExerciseListFileState extends State<WorkToExerciseListFile>
   _createbody() {
     return Container( margin: EdgeInsets.only(top: 8,bottom: 8,left: 12,right: 12),
       child: Column(children: <Widget>[
-        Text("1 Week workout for beginers",textAlign:TextAlign.center,style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold ),),
+        Text(widget.title,textAlign:TextAlign.center,style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold ),),
         SizedBox(height: 5,),
       Container(margin: EdgeInsets.only(top: 5,left: 5,right: 5,bottom: 5), child:
       ListView.builder(shrinkWrap: true,
 
-          itemCount:5 ,
+          itemCount:exerciselist.length ,
           scrollDirection: Axis.vertical,
           itemBuilder: (context,index)
           {
             return
               InkWell(
-                  onTap: (){
+                  onTap: ()
+                  {
 //// FORWARD TO EXERCISE DETAIL SCREEN
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> ExerciseDetailFile()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> ExerciseDetailFile(umodels: exerciselist[index],)));
                   },
 
 
@@ -81,7 +98,7 @@ class WorkToExerciseListFileState extends State<WorkToExerciseListFile>
 
                             fit: BoxFit.fill,
                             image: NetworkImage(
-                                ""),
+                                exerciselist[index].exerciseimg),
                             placeholder: AssetImage(
                                 ConstantsForImages.imgplaceholder),),),
                         ),
@@ -90,11 +107,11 @@ class WorkToExerciseListFileState extends State<WorkToExerciseListFile>
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text("Exercise Name",style: TextStyle(color: MyColors.basetextcolor,fontSize: 18,fontWeight: FontWeight.bold),),
+                            Text(exerciselist[index].exercisername,style: TextStyle(color: MyColors.basetextcolor,fontSize: 18,fontWeight: FontWeight.bold),),
                             SizedBox(height: 5,),
-                            Text("Body PArt",style: TextStyle(color: Colors.black54,fontSize: 14,),),
+                            Text(exerciselist[index].exercisebodypartname,style: TextStyle(color: Colors.black54,fontSize: 14,),),
                             SizedBox(height: 5,),
-                            Text("Body PArt",style: TextStyle(color: Colors.black54,fontSize: 14,),),
+                            Text(exerciselist[index].repetation,style: TextStyle(color: Colors.black54,fontSize: 14,),),
 
 
                           ],),],)),
@@ -107,6 +124,26 @@ class WorkToExerciseListFileState extends State<WorkToExerciseListFile>
 
     );
 
+
+  }
+
+  void _CALLEXERCISELISTFILE() {
+    try
+    {
+      FireBase.getexerciselist(widget.exerciselistid).then((data){
+        exerciselist=data;
+        setState(() {
+          mainstate=true;
+        });
+      });
+
+
+
+    }
+    catch(e)
+    {
+      print(e);
+    }
 
   }
 

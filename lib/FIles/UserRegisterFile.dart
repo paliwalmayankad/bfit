@@ -85,7 +85,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text(nameanswerstring,
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
 
                 /// ASK FOR QUESTION ADDRESS
                 addressquestion==true? Align(
@@ -94,7 +95,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text('What is your Address ?',
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
                 //// ANSWER FOR ADDRESS
                 addressanswer==true? Align(
                     alignment: Alignment.centerRight,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
@@ -102,7 +104,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text(addressanswerstring,
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
 
                 //// ASK FOR AGE
                 agequestion==true? Align(
@@ -111,7 +114,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text('What is your Age ?',
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
                 //// ANSWER FOR AGE
                 ageanswer==true? Align(
                     alignment: Alignment.centerRight,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
@@ -119,7 +123,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text(ageanswerstring,
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
 //// ASK FOR HEIGHT
                 heightquestion==true? Align(
                     alignment: Alignment.centerLeft,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
@@ -127,7 +132,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text('What is your Height ?',
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
                 //// ANSWER FOR HEIGHT
                 heightanswer==true? Align(
                     alignment: Alignment.centerRight,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
@@ -135,7 +141,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text(heightanswerstring,
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
                 ////ASK FOR WEIGHT
                 weightquestion==true? Align(
                     alignment: Alignment.centerLeft,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
@@ -143,7 +150,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text('What is your Weight(kg) ?',
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
                 //// ANSWER FOR Weight
                 weightanswer==true? Align(
                     alignment: Alignment.centerRight,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
@@ -151,7 +159,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text(weightanswerstring,
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
                 //// ASK FOR GENDER
                 genderquestion==true? Align(
                     alignment: Alignment.centerLeft,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
@@ -159,7 +168,8 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
 
                   child: Text('What is your Gender ?',
                     style: TextStyle(color: Colors.white),textAlign: TextAlign.left,) ,
-                )):SizedBox(),
+                )
+                ):SizedBox(),
                 //// ANSWER FOR GENDER
                 genderanswer==true? Align(
                     alignment: Alignment.centerRight,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
@@ -170,7 +180,9 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
                 )):SizedBox(),
                 /// ASK FOR EMAIL
                 emailquestion==true? Align(
-                    alignment: Alignment.centerLeft,child: Container(  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
+                    alignment: Alignment.centerLeft,child:
+                Container(
+                  padding: EdgeInsets.only(top: 8,bottom: 8,left: 4,right: 4),
                   decoration: UiViewsWidget.greyblackcolorbackground(),
 
                   child: Text('What is your Email ?',
@@ -337,6 +349,7 @@ final Map<int,Widget> segmentvalue=const<int,Widget>{0:Text("1",style: TextStyle
       "following":"0",
       "followersarray":[],
       "followingarray":[],
+      "myworkoutlist":[],
       "healthindicatorshow":false,
       "img":"",
       "pressure":"0",
@@ -359,14 +372,6 @@ PrefrencesManager.setString(Stringconstants.USERID, data.documentID.toString());
       Navigator.pushReplacementNamed(context, '/dashboard');
 
     });
-    /*FireBase.registeruser(map).then((data){
-      if(data==true) {
-
-      }
-      else{
-        print("error");
-      }
-    });*/
 
 
 

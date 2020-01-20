@@ -458,7 +458,7 @@ SizedBox(height: 8,),
       else
       {
         Map<String, dynamic> map = {
-          "bookmarks": FieldValue.arrayRemove([userid])
+          "bookmark": FieldValue.arrayRemove([userid])
         };
         Firestore.instance.collection('exercises')
             .document(newsfeedlist.exerciseid)

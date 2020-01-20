@@ -13,6 +13,7 @@ List<dynamic> likes;
   bool like=false;
   bool dislike=false;
   List<Stepsmodule> stepswithimg=new List();
+  String repetation;
 
 }
 class Stepsmodule{

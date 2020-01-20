@@ -372,7 +372,9 @@ class UiViewsWidget extends BloCSetting {
 
                   ],)),),
                 SizedBox(height: 13,),
-                InkWell(onTap: (){Navigator.of(context).pop();},child: Container(child:Row(  children: <Widget>[
+                InkWell(onTap: (){Navigator.of(context).pop();
+                addState(phoneass.setting);
+                },child: Container(child:Row(  children: <Widget>[
                   Image.asset(ConstantsForImages.drawericonsetting,height: 30,width: 30,),
                   SizedBox(width: 10,),
                   Text('Setting',style: TextStyle(color: Colors.white,fontSize: 14),)

@@ -19,6 +19,7 @@ import 'ExerciseHeaderFile.dart';
 import 'GymListFile.dart';
 import 'SettingFile.dart';
 
+
 class DashboardFile extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -29,7 +30,7 @@ class DashboardFile extends StatefulWidget {
 
 class DashboardFileState extends State<DashboardFile>
 {
-  int currentPage = 0;
+  int currentPage = 2;
   GlobalKey bottomNavigationKey = GlobalKey();
   bool homeselected=true;
   bool weddingselected=false;
@@ -51,7 +52,7 @@ class DashboardFileState extends State<DashboardFile>
     super.initState();
     bool ss=PrefrencesManager.getBool("LOGIN");
     print("loginstatus "+ss.toString());
-
+currentPage=0;
     Screenview= HomeFile(this.callback);
     startlistnerformenuitem();
   }
@@ -60,7 +61,10 @@ class DashboardFileState extends State<DashboardFile>
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return  Scaffold(backgroundColor: Colors.white,
+    return WillPopScope(
+
+        onWillPop: _checkforapp,
+        child: Scaffold(backgroundColor: Colors.white,
       body: Container(decoration: UiViewsWidget.BackgroundImage(), child: Screenview),
       key: scaffoldState,
       appBar: getAppBar(),
@@ -75,7 +79,7 @@ class DashboardFileState extends State<DashboardFile>
       endDrawer: UiViewsWidget.draweritemandcontainer(context,scaffoldState,Screenview),
 
 
-    );
+    ));
   }
 
   getAppBar() {
@@ -99,121 +103,17 @@ class DashboardFileState extends State<DashboardFile>
 
   }
 
-  void _selectedtap(int i) {
-    if(i==0)
-    {
-      setState(() {
-        weddingselected=true;
-      });
-      setState(() {
-        artistselected=false;
-      });
-      setState(() {
-        homeselected=false;
-      });
-      setState(() {
-        businessselected=false;
-      });
-      setState(() {
-        settingselected=false;
-      });
-      /// SET SCREEN
-      Screenview=WeddingEventFile();
-
-    }
-    else if(i==1)
-    {
-      setState(() {
-        weddingselected=false;
-      });
-      setState(() {
-        artistselected=true;
-      });
-      setState(() {
-        homeselected=false;
-      });
-      setState(() {
-        businessselected=false;
-      });
-      setState(() {
-        settingselected=false;
-      });
-//// SET SCREEN
-      Screenview=ArtistFile();
-    }
-    else if(i==2)
-    {
-      setState(() {
-        weddingselected=false;
-      });
-      setState(() {
-        artistselected=false;
-      });
-      setState(() {
-        homeselected=true;
-      });
-      setState(() {
-        businessselected=false;
-      });
-      setState(() {
-        settingselected=false;
-      });
-      //// SET SCREEN
-      Screenview=HomeFile(this.callback);
-    }
-    else if(i==3)
-    {
-      setState(() {
-        weddingselected=false;
-      });
-      setState(() {
-        artistselected=false;
-      });
-
-      setState(() {
-        homeselected=false;
-      });
-
-      setState(() {
-        businessselected=true;
-      });
-
-      setState(() {
-        settingselected=false;
-      });
-      //// SET SCREEN
-      Screenview=BusinessFile();
-    }
-    else if(i==4)
-    {
-      setState(() {
-        weddingselected=false;
-      });
-      setState(() {
-        artistselected=false;
-      });
-      setState(() {
-        homeselected=false;
-      });
-      setState(() {
-        businessselected=false;
-      });
-      setState(() {
-        settingselected=true;
-      });
-      //// SET SCREEN
-      Screenview=SettingFile();
-    }
 
 
 
-  }
+
 
   void startlistnerformenuitem() {
     UiViewsWidget.statestt.listen((state)
     {
       if(state==phoneass.Home){
         setState(() {
+          currentPage=0;
           Screenview=HomeFile(this.callback);
         });
 
@@ -221,6 +121,7 @@ class DashboardFileState extends State<DashboardFile>
       if(state==phoneass.profile)
       {
         setState(() {
+          currentPage=1;
           Screenview=MyProfileFile();
         });
 
@@ -228,41 +129,68 @@ class DashboardFileState extends State<DashboardFile>
       if(state==phoneass.message)
       {
         setState(() {
+          currentPage=1;
         Screenview=UserMessageFile();
         });
       }
       if(state==phoneass.news)
       {
         setState(() {
+          currentPage=1;
         Screenview=NewsFile(callback: this.callback,);
         });
       }
       if(state==phoneass.bookmarks)
       {
         setState(() {
+          currentPage=1;
         Screenview=MyBookmarksListFile();
         });
       }
       if(state==phoneass.gym)
       {
         setState(() {
+          currentPage=1;
         Screenview=GymListFile(callback: this.callback,);
         });
       }
       if(state==phoneass.exercise)
       {
         setState(() {
+          currentPage=1;
         Screenview=ExerciseHeaderFile(callback: this.callback,);
         });
       }
  if(state==phoneass.workout)
       {
         setState(() {
+          currentPage=1;
         Screenview=WorkoutsFile(callback: this.callback,);
+        });
+      }
+ if(state==phoneass.setting)
+      {
+        setState(() {
+          currentPage=1;
+        Screenview=SettingFile();
         });
       }
 
     });
+
+  }
+
+  Future<bool> _checkforapp() async {
+    bool out;
+    if(currentPage==0){
+      return true;
+    }
+    else{
+      setState(() {
+        currentPage=0;
+        Screenview=HomeFile(this.callback);
+      });
+    }
 
   }
 
