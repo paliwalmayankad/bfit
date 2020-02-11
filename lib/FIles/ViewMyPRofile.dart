@@ -280,7 +280,10 @@ class _ViewmyprofileState extends State<ViewMyPRofile> with TickerProviderStateM
         pumodels.followers = pumodels.followersarray.length.toString();
         pumodels.following = pumodels.followingarray.length.toString();
         usergoalslist=userdata['personalgoals'];
-        userimage=userdata['img'];
+        setState(() {
+          userimage=userdata['img'];
+        });
+
 
          umodels=pumodels;
 if(umodels.aboutmeshow==false){

@@ -68,7 +68,14 @@ class SettingFileState extends State<SettingFile>
     return Container(margin: EdgeInsets.only(left: 10,right: 10,top: 7,bottom: 7),
       child: Column(mainAxisSize:MainAxisSize.max,children: <Widget>[
 //// NOTIFICATION
-        InkWell(child:
+        InkWell(
+            onTap: (){
+
+              Navigator.pushNamed(context, "/notificationfile");
+
+            },
+
+            child:
         Container(decoration: UiViewsWidget.greyblackcolorbackground(), margin: EdgeInsets.only(left: 15,right: 15,top: 8,bottom: 8),
 padding:EdgeInsets.only(top: 12,bottom: 12,left: 5,right: 5),
 child: Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,7 +91,15 @@ child: Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossA
         SizedBox(height: 0,),
 
         /// BLOCKLIST
-        InkWell(child:
+        InkWell(
+            onTap: (){
+
+              Navigator.pushNamed(context, "/blocklistfile");
+
+            },
+
+
+            child:
         Container(decoration: UiViewsWidget.greyblackcolorbackground(), margin: EdgeInsets.only(left: 15,right: 15,top: 8,bottom: 8),
           padding:EdgeInsets.only(top: 12,bottom: 12,left: 5,right: 5),
           child: Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.center,
@@ -293,6 +308,7 @@ child: Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossA
       PrefrencesManager.setBool(Stringconstants.LOGIN, false);
 
       Navigator.of(context).pop();
+      Navigator.pushReplacement(context, new MaterialPageRoute(builder:  (ctxt) =>  MyApp()));
     }
 
   }

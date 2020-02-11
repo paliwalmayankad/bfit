@@ -530,7 +530,7 @@ GymPlans gymp;
         //// NOW ADD DATA TO SUBSCRIPTION LIST
         Map<String, dynamic> subscriptionmap =
         {
-          "duration": gymp.duration,
+          "duration": gymp.duration+"month",
           "payment": gymp.price,
           "planfor": widget.gymdetail.gymid,
 
@@ -541,10 +541,13 @@ GymPlans gymp;
               "dd/MMM/yyyy"),
 
           "purchaseplanfrom": widget.gymdetail.gymid,
-          "subscriptionenddate": gymp.duration + " from " +
+          "subscriptionenddate": gymp.duration +"month"+ " from " +
               UiViewsWidget.getcurrentdateasrequireformat("dd/MMM/yyyy"),
           "username": PrefrencesManager.getString(Stringconstants.NAME),
           "userid": PrefrencesManager.getString(Stringconstants.USERID),
+          "title":widget.gymdetail.gymname,
+          "img":widget.gymdetail.gymicon,
+          "expdate":UiViewsWidget.fromdatetoexpiry(UiViewsWidget.getcurrentdateasrequireformat("dd/MMM/yyyy").toString(), int.parse(gymp.duration) ),
 
         };
         //// ADDD DATA TO FIRESTORE FOR SUBSCRIPTION

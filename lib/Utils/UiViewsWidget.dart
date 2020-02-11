@@ -14,7 +14,7 @@ import 'MyColors.dart';
 enum phoneass { Home,profile, message, communities, bookmarks,exercise, workout, trainers,invitefriend, news,gym,setting }
 
 class UiViewsWidget extends BloCSetting {
-//  static StreamController<String> sstream = StreamController();
+//  static StreamCoBackgroundImagentroller<String> sstream = StreamController();
   final StreamController<bool> sstream = StreamController<bool>.broadcast();
   static StreamController<phoneass> phoneauthstates = StreamController(sync: true);
   static Stream statestt = phoneauthstates.stream;
@@ -886,7 +886,17 @@ return gymstatus;
 
   }
 
-
+static String fromdatetoexpiry(String date, int month){
+  try {
+    var myDate = DateFormat('dd/MMM/yyyy').parse(date);
+    var prevMonth = new DateTime(myDate.year, myDate.month + month, myDate.day);
+    return prevMonth.toString();
+  }
+  catch(e)
+  {
+    print(e);
+  }
+}
 }
 
 class BloCSetting extends State {
